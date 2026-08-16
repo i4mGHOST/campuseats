@@ -4,7 +4,7 @@
 CampusEats is an online dining platform designed to streamline food ordering across university campus cafeterias, food trucks, and local vendors. It enables students and faculty to browse real-time menus, place pre-orders, make digital payments, and track meal fulfillment to eliminate long queue times during peak lunch hours.
 
 ### Who Uses It
-* **Students & University Staff:** Browse vendor options, place orders, make payments, and collect orders.
+* **Students & University Staff (Customers):** Browse vendor options, place orders, make payments, and collect orders.
 * **Campus Food Vendors & Kitchen Managers:** Manage active menu inventory, accept incoming orders, update fulfillment statuses, and view daily sales analytics.
 * **Campus System Administrators:** Onboard new dining vendors, manage user accounts, resolve order disputes, and oversee platform system settings.
 
@@ -12,9 +12,9 @@ CampusEats is an online dining platform designed to streamline food ordering acr
 
 ### Nouns (Entities & Data Structures)
 
-**Student Interactive Services**
-* **User Account:** Profile entity storing student credentials, role permissions, and contact details to identify the customer.
-* **Vendor Directory:** Searchable listing of active campus eateries and food stalls available for student ordering.
+**Customer Interactive Services**
+* **User Account:** Profile entity storing user credentials, role permissions, and contact details to identify the user.
+* **Vendor Directory:** Searchable listing of active campus eateries and food stalls available for customer ordering.
 * **Cart:** Temporary storage collection mapping selected menu items and quantities before final checkout.
 * **Order Receipt:** Digital transactional record confirming meal purchase details, timestamps, and pickup codes.
 
@@ -25,15 +25,15 @@ CampusEats is an online dining platform designed to streamline food ordering acr
 
 **Administrative & Platform Services**
 * **Payment Gateway Record:** Financial log capturing transaction IDs, payment verification statuses, and balance audit trails.
-* **Dispute Ticket:** Logged issue record generated when a student or vendor requests resolution for order errors or refunds.
+* **Dispute Ticket:** Logged issue record generated when a customer or vendor requests resolution for order errors or refunds.
 * **System Analytics Report:** Aggregated data summary tracking campus dining volume, peak order hours, and revenue metrics.
 
 ---
 
 ### Verbs (System Actions & Contracts)
 
-**Student Interactive Actions**
-* **Authenticate User:** Validates student credentials via campus Single Sign-On (SSO) to grant access to the ordering portal.
+**Customer Interactive Actions**
+* **Authenticate User:** Validates user credentials via campus Single Sign-On (SSO) to grant access to the ordering portal.
 * **Browse Vendors:** Queries and filter available campus dining outlets based on location, cuisine, or operational status.
 * **Add to Cart:** Appends selected menu items and custom options to the student's active shopping session.
 * **Checkout Order:** Submits cart items to create a pending order and requests payment processing.
@@ -41,8 +41,8 @@ CampusEats is an online dining platform designed to streamline food ordering acr
 
 **Vendor Interactive Actions**
 * **Update Inventory:** Toggles menu item availability in real time when ingredients run out during peak meal hours.
-* **Accept Order:** Acknowledges incoming student orders from the kitchen queue to initiate meal preparation.
-* **Mark Ready:** Triggers an automated pickup notification to the student once the kitchen completes meal prep.
+* **Accept Order:** Acknowledges incoming customer orders from the kitchen queue to initiate meal preparation.
+* **Mark Ready:** Triggers an automated pickup notification to the customer once the kitchen completes meal prep.
 * **Generate Sales Summary:** Compiles daily transaction totals and item sales counts for vendor financial tracking.
 
 **Administrative & Platform Actions**

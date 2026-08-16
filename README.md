@@ -7,6 +7,15 @@
 The codebase and accompanying documentation provide a structured blueprint for building, testing, and auditing high-throughput campus service platforms.
 
 ---
+## Team Details
+
+| Serial Number | Team Member Name | Roll Number |
+| :--- | :--- | :--- |
+| 1 | SUVOJIT NAG|20251651094 |
+| 2 | VANSH PANWAR|20251651101 |
+| 3 | AJEET SHAKYA|20251651010 |
+| 4 | ANKIT|20251651021 |
+| 5 | ANJUL YADAV| 20251651020|
 
 ## File Manifest
 

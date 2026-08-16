@@ -1,0 +1,85 @@
+<mxfile host="app.diagrams.net" agent="draw.io">
+  <diagram name="CampusEats-ERD-Services" id="campuseats-erd-services">
+    <mxGraphModel dx="2102" dy="937" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1100" background="#FFCCCC" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="svc_user" parent="1" style="swimlane;whiteSpace=wrap;html=1;startSize=28;fontStyle=1;fontSize=13;labelBackgroundColor=none;" value="User Service (user_service schema)" vertex="1">
+          <mxGeometry height="350" width="530" x="40" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl_users" parent="svc_user" style="rounded=1;whiteSpace=pre;html=1;align=left;spacingLeft=10;fontSize=11;fontFamily=monospace;labelBackgroundColor=none;" value="users&#xa;--------------------------------------------&#xa;[PK] user_id : UUID&#xa;email : VARCHAR(255) [UNIQUE]&#xa;password_hash : VARCHAR(255)&#xa;full_name : VARCHAR(120)&#xa;phone_number : VARCHAR(20)&#xa;user_role : VARCHAR(20)&#xa;created_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="165" width="225" x="20" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl_addresses" parent="svc_user" style="rounded=1;whiteSpace=pre;html=1;align=left;spacingLeft=10;fontSize=11;fontFamily=monospace;labelBackgroundColor=none;" value="delivery_addresses&#xa;--------------------------------------------&#xa;[PK] address_id : UUID&#xa;[FK] user_id : UUID&#xa;building_name : VARCHAR(100)&#xa;room_number : VARCHAR(50)&#xa;campus_zone : VARCHAR(50)&#xa;delivery_instructions : TEXT&#xa;is_default : BOOLEAN" vertex="1">
+          <mxGeometry height="165" width="225" x="280" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_user_addr" edge="1" parent="svc_user" source="tbl_users" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;endArrow=ERmany;startArrow=ERone;labelBackgroundColor=none;fontColor=default;" target="tbl_addresses">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="svc_cat" parent="1" style="swimlane;whiteSpace=wrap;html=1;startSize=28;fontStyle=1;fontSize=13;labelBackgroundColor=none;" value="Catalogue Service (catalogue_service schema)" vertex="1">
+          <mxGeometry height="350" width="530" x="600" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl_merchants" parent="svc_cat" style="rounded=1;whiteSpace=pre;html=1;align=left;spacingLeft=10;fontSize=11;fontFamily=monospace;labelBackgroundColor=none;" value="merchants&#xa;--------------------------------------------&#xa;[PK] merchant_id : UUID&#xa;name : VARCHAR(150)&#xa;campus_location : VARCHAR(150)&#xa;is_active : BOOLEAN&#xa;opening_time : TIME&#xa;closing_time : TIME&#xa;created_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="165" width="225" x="20" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl_menu_items" parent="svc_cat" style="rounded=1;whiteSpace=pre;html=1;align=left;spacingLeft=10;fontSize=11;fontFamily=monospace;labelBackgroundColor=none;" value="menu_items&#xa;--------------------------------------------&#xa;[PK] item_id : UUID&#xa;[FK] merchant_id : UUID&#xa;name : VARCHAR(120)&#xa;description : TEXT&#xa;price_cents : INT&#xa;category : VARCHAR(50)&#xa;is_available : BOOLEAN" vertex="1">
+          <mxGeometry height="165" width="225" x="280" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_merch_items" edge="1" parent="svc_cat" source="tbl_merchants" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;endArrow=ERmany;startArrow=ERone;labelBackgroundColor=none;fontColor=default;" target="tbl_menu_items">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="svc_notify" parent="1" style="swimlane;whiteSpace=wrap;html=1;startSize=28;fontStyle=1;fontSize=13;labelBackgroundColor=none;" value="Notifications Service (notification_service schema)" vertex="1">
+          <mxGeometry height="350" width="400" x="1160" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl_message_log" parent="svc_notify" style="rounded=1;whiteSpace=pre;html=1;align=left;spacingLeft=10;fontSize=11;fontFamily=monospace;labelBackgroundColor=none;" value="message_log&#xa;--------------------------------------------&#xa;[PK] message_id : UUID&#xa;[REF] user_id : UUID&#xa;message_type : VARCHAR(50)&#xa;channel : VARCHAR(20)&#xa;message_content : TEXT&#xa;status : VARCHAR(20)&#xa;sent_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="190" width="290" x="55" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="svc_order" parent="1" style="swimlane;whiteSpace=wrap;html=1;startSize=28;fontStyle=1;fontSize=13;labelBackgroundColor=none;" value="Order Service (order_service schema)" vertex="1">
+          <mxGeometry height="490" width="730" x="40" y="425" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl_orders" parent="svc_order" style="rounded=1;whiteSpace=pre;html=1;align=left;spacingLeft=10;fontSize=11;fontFamily=monospace;labelBackgroundColor=none;" value="orders&#xa;--------------------------------------------&#xa;[PK] order_id : UUID&#xa;[REF] user_id : UUID&#xa;[REF] merchant_id : UUID&#xa;[REF] delivery_address_id : UUID&#xa;status : VARCHAR(30)&#xa;subtotal_cents : INT&#xa;delivery_fee_cents : INT&#xa;total_cents : INT&#xa;created_at : TIMESTAMP&#xa;updated_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="220" width="245" x="20" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl_order_items" parent="svc_order" style="rounded=1;whiteSpace=pre;html=1;align=left;spacingLeft=10;fontSize=11;fontFamily=monospace;labelBackgroundColor=none;" value="order_items&#xa;--------------------------------------------&#xa;[PK] order_item_id : UUID&#xa;[FK] order_id : UUID&#xa;[REF] item_id : UUID&#xa;item_name_snapshot : VARCHAR(120)&#xa;unit_price_cents : INT&#xa;quantity : INT&#xa;total_price_cents : INT" vertex="1">
+          <mxGeometry height="220" width="245" x="290" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_order_items" edge="1" parent="svc_order" source="tbl_orders" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;endArrow=ERmany;startArrow=ERone;labelBackgroundColor=none;fontColor=default;" target="tbl_order_items">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sub_cart" parent="svc_order" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fontSize=11;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="Cart Service&#xa;Owns: carts, cart_items, cart_id&#xa;Contract: createCart, addToCart, updateCart, getCart, clearCart" vertex="1">
+          <mxGeometry height="205" width="150" x="555" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="cart_order_link" edge="1" parent="svc_order" source="sub_cart" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=block;fontSize=9;labelBackgroundColor=none;fontColor=default;" target="tbl_orders" value="cart → order">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="svc_pay" parent="1" style="swimlane;whiteSpace=wrap;html=1;startSize=28;fontStyle=1;fontSize=13;labelBackgroundColor=none;" value="Payment Service (payment_service schema)" vertex="1">
+          <mxGeometry height="490" width="360" x="800" y="425" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl_payments" parent="svc_pay" style="rounded=1;whiteSpace=pre;html=1;align=left;spacingLeft=10;fontSize=11;fontFamily=monospace;labelBackgroundColor=none;" value="payments&#xa;--------------------------------------------&#xa;[PK] payment_id : UUID&#xa;[REF] order_id : UUID [UNIQUE]&#xa;[REF] user_id : UUID&#xa;amount_cents : INT&#xa;payment_method : VARCHAR(30)&#xa;payment_status : VARCHAR(30)&#xa;transaction_reference : VARCHAR&#xa;processed_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="205" width="320" x="20" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="sub_refund" parent="svc_pay" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fontSize=11;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="Refund Service&#xa;Owns: refunds&#xa;Contract: createRefund, getRefundStatus, processRefund" vertex="1">
+          <mxGeometry height="125" width="270" x="45" y="285" as="geometry" />
+        </mxCell>
+        <mxCell id="refund_payment_link" edge="1" parent="svc_pay" source="sub_refund" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=block;fontSize=9;labelBackgroundColor=none;fontColor=default;" target="tbl_payments" value="refund → payment">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="svc_deliv" parent="1" style="swimlane;whiteSpace=wrap;html=1;startSize=28;fontStyle=1;fontSize=13;labelBackgroundColor=none;" value="Delivery Service (delivery_service schema)" vertex="1">
+          <mxGeometry height="490" width="360" x="1200" y="425" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl_deliveries" parent="svc_deliv" style="rounded=1;whiteSpace=pre;html=1;align=left;spacingLeft=10;fontSize=11;fontFamily=monospace;labelBackgroundColor=none;" value="deliveries&#xa;--------------------------------------------&#xa;[PK] delivery_id : UUID&#xa;[REF] order_id : UUID [UNIQUE]&#xa;[REF] courier_id : UUID&#xa;pickup_location : VARCHAR(150)&#xa;dropoff_location : VARCHAR(150)&#xa;delivery_status : VARCHAR(30)&#xa;estimated_arrival : TIMESTAMP&#xa;delivered_at : TIMESTAMP" vertex="1">
+          <mxGeometry height="205" width="320" x="20" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="sub_rider" parent="svc_deliv" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;fontSize=11;align=center;verticalAlign=middle;labelBackgroundColor=none;" value="Rider Service&#xa;Owns: riders, rider_assignments&#xa;Contract: registerRider, assignRider, getRiderStatus" vertex="1">
+          <mxGeometry height="125" width="270" x="45" y="285" as="geometry" />
+        </mxCell>
+        <mxCell id="rider_delivery_link" edge="1" parent="svc_deliv" source="sub_rider" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=block;fontSize=9;labelBackgroundColor=none;fontColor=default;" target="tbl_deliveries" value="rider → delivery">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" parent="1" style="shape=note;whiteSpace=wrap;html=1;fontSize=11;align=left;spacingLeft=10;labelBackgroundColor=none;" value="Main Services: User • Catalogue • Order • Payment • Delivery • Notifications&#xa;Sub-services: Cart (under Order) • Refund (under Payment) • Rider (under Delivery)&#xa;[PK] Primary Key • [FK] Local Foreign Key • [REF] Logical Cross-Service Reference" vertex="1">
+          <mxGeometry height="85" width="1520" x="40" y="945" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
