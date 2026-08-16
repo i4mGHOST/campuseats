@@ -20,19 +20,19 @@ The codebase and accompanying documentation provide a structured blueprint for b
 ---
 
 ## Directory Structure
-📦campuseats
- ┣ 📂docs
- ┃ ┣ 📂screenshots
- ┃ ┃ ┣ 📜request1.png
- ┃ ┃ ┣ 📜request2.png
- ┃ ┃ ┣ 📜request3.png
- ┃ ┃ ┣ 📜request4.png
- ┃ ┃ ┗ 📜request5.png
- ┃ ┣ 📜brief.md
- ┃ ┣ 📜http-log.md
- ┃ ┗ 📜network-analysis.md
- ┗ 📜README.md
- 
+📦`campuseats/`</br>
+ ┣ 📂[`docs/`](./docs/)</br>
+ ┃ ┣ 📂[`screenshots/`](./docs/screenshots/)</br>
+ ┃ ┃ ┣ 📜[`request1.png`](./docs/screenshots/request1.png)</br>
+ ┃ ┃ ┣ 📜[`request2.png`](./docs/screenshots/request2.png)</br>
+ ┃ ┃ ┣ 📜[`request3.png`](./docs/screenshots/request3.png)</br>
+ ┃ ┃ ┣ 📜[`request4.png`](./docs/screenshots/request4.png)</br>
+ ┃ ┃ ┗ 📜[`request5.png`](./docs/screenshots/request5.png)</br>
+ ┃ ┣ 📜[`brief.md`](./docs/brief.md)</br>
+ ┃ ┣ 📜[`http-log.md`](./docs/http-log.md)</br>
+ ┃ ┗ 📜[`network-analysis.md`](./docs/network-analysis.md)</br>
+ ┗ 📜[`README.md`](./README.md)
+  
 ---
 
 ## Key Project Components & Summaries
