@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 
+    name="PaymentGatewayService"
+    targetNamespace="http://campuseats.org/paymentgateway"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://campuseats.org/paymentgateway">
+
+    <!-- 1.TYPES: Data definitions -->
+    <wsdl:types>
+        <xs:schema targetNamespace="http://campuseats.org/paymentgateway" elementFormDefault="qualified">
+            
+            <!-- Auth Header -->
+            <xs:element name="AuthHeader">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="merchantId" type="xs:string"/>
+                        <xs:element name="apiKey" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <!-- Charge Request Input -->
+            <xs:element name="ChargeRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="studentId" type="xs:string"/>
+                        <xs:element name="orderId" type="xs:string"/>
+                        <xs:element name="amountCents" type="xs:int"/>
+                        <xs:element name="paymentMethodId" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <!-- Charge Response Output -->
+            <xs:element name="ChargeResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="transactionId" type="xs:string"/>
+                        <xs:element name="receiptNumber" type="xs:string"/>
+                        <xs:element name="status" type="xs:string"/>
+                        <xs:element name="processedAt" type="xs:dateTime"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <!-- Charge Fault Detail -->
+            <xs:element name="ChargeFault">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="errorCode" type="xs:string"/>
+                        <xs:element name="errorMessage" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            
+        </xs:schema>
+    </wsdl:types>
+
+    <!-- 2. MESSAGES: Definition of data transmitted -->
+    <wsdl:message name="AuthHeaderMessage">
+        <wsdl:part name="header" element="tns:AuthHeader"/>
+    </wsdl:message>
+
+    <wsdl:message name="ChargeInputMessage">
+        <wsdl:part name="parameters" element="tns:ChargeRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="ChargeOutputMessage">
+        <wsdl:part name="parameters" element="tns:ChargeResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="ChargeFaultMessage">
+        <wsdl:part name="fault" element="tns:ChargeFault"/>
+    </wsdl:message>
+
+    <!-- 3. PORT TYPE: Abstract operations interface -->
+    <wsdl:portType name="PaymentGatewayPortType">
+        <wsdl:operation name="Charge">
+            <wsdl:input message="tns:ChargeInputMessage"/>
+            <wsdl:output message="tns:ChargeOutputMessage"/>
+            <wsdl:fault name="ChargeFault" message="tns:ChargeFaultMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <!-- 4. BINDING: Protocol details (SOAP over HTTP) -->
+    <wsdl:binding name="PaymentGatewaySoapBinding" type="tns:PaymentGatewayPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="Charge">
+            <soap:operation soapAction="http://campuseats.org/paymentgateway/Charge"/>
+            <wsdl:input>
+                <soap:header message="tns:AuthHeaderMessage" part="header" use="literal"/>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ChargeFault">
+                <soap:fault name="ChargeFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <!-- 5. SERVICE & 6. PORT: Physical endpoint location -->
+    <wsdl:service name="PaymentGatewayService">
+        <wsdl:port name="PaymentGatewayPort" binding="tns:PaymentGatewaySoapBinding">
+            <soap:address location="https://api.globalpay.com/soap/v1/charge"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>

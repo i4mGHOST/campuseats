@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope 
+    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+    xmlns:pay="http://campuseats.org/paymentgateway">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <soapenv:Fault>
+      <faultcode>soapenv:Client</faultcode>
+      <faultstring>Payment execution failed: Insufficient funds in user account.</faultstring>
+      <detail>
+        <pay:ChargeFault>
+          <pay:errorCode>ERR_INSUFFICIENT_FUNDS</pay:errorCode>
+          <pay:errorMessage>The account linked to the payment method does not have enough balance to complete the transaction.</pay:errorMessage>
+        </pay:ChargeFault>
+      </detail>
+    </soapenv:Fault>
+  </soapenv:Body>
+</soapenv:Envelope>

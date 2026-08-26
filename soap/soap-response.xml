@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope 
+    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+    xmlns:pay="http://campuseats.org/paymentgateway">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <pay:ChargeResponse>
+      <pay:transactionId>tx_9920148201</pay:transactionId>
+      <pay:receiptNumber>REC-2026-0826-8819</pay:receiptNumber>
+      <pay:status>SUCCESS</pay:status>
+      <pay:processedAt>2026-08-26T01:19:00Z</pay:processedAt>
+    </pay:ChargeResponse>
+  </soapenv:Body>
+</soapenv:Envelope>

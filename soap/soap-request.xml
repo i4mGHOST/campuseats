@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope 
+    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+    xmlns:pay="http://campuseats.org/paymentgateway">
+  <soapenv:Header>
+    <pay:AuthHeader>
+      <pay:merchantId>CAMPUS_EATS_001</pay:merchantId>
+      <pay:apiKey>sk_live_9f8d7c6b5a4e3d2c1</pay:apiKey>
+    </pay:AuthHeader>
+  </soapenv:Header>
+  <soapenv:Body>
+    <pay:ChargeRequest>
+      <pay:studentId>usr_883920194</pay:studentId>
+      <pay:orderId>ord_551029481</pay:orderId>
+      <pay:amountCents>1450</pay:amountCents>
+      <pay:paymentMethodId>pm_card_visa_4242</pay:paymentMethodId>
+    </pay:ChargeRequest>
+  </soapenv:Body>
+</soapenv:Envelope>
