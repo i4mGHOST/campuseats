@@ -1,0 +1,132 @@
+# 1. Successful Create (201 Created with Location Header)
+$ curl -i -X POST http://localhost:5000/orders \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: key_demo_001" \
+  -d '{
+    "studentId": "usr_883920194",
+    "paymentMethodId": "pm_card_visa_4242",
+    "items": [
+      {"itemId": "item_01", "name": "Veggie Supreme Burger", "quantity": 2, "unitPriceCents": 725}
+    ]
+  }'
+
+HTTP/1.1 201 CREATED
+Content-Type: application/json
+Location: /orders/ord_9a8b7c6d
+Content-Length: 268
+
+{
+  "createdAt": "2026-09-08T10:15:30Z",
+  "items": [
+    {
+      "itemId": "item_01",
+      "name": "Veggie Supreme Burger",
+      "quantity": 2,
+      "unitPriceCents": 725
+    }
+  ],
+  "orderId": "ord_9a8b7c6d",
+  "paymentTransactionId": "tx_88192011",
+  "status": "PAID",
+  "studentId": "usr_883920194",
+  "totalAmountCents": 1450
+}
+
+# 2. Idempotent Repeat (Same Idempotency-Key Returns Original Result)
+$ curl -i -X POST http://localhost:5000/orders \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: key_demo_001" \
+  -d '{
+    "studentId": "usr_883920194",
+    "paymentMethodId": "pm_card_visa_4242",
+    "items": [
+      {"itemId": "item_01", "name": "Veggie Supreme Burger", "quantity": 2, "unitPriceCents": 725}
+    ]
+  }'
+
+HTTP/1.1 201 CREATED
+Content-Type: application/json
+Location: /orders/ord_9a8b7c6d
+X-Idempotent-Replay: true
+Content-Length: 268
+
+{
+  "createdAt": "2026-09-08T10:15:30Z",
+  "items": [
+    {
+      "itemId": "item_01",
+      "name": "Veggie Supreme Burger",
+      "quantity": 2,
+      "unitPriceCents": 725
+    }
+  ],
+  "orderId": "ord_9a8b7c6d",
+  "paymentTransactionId": "tx_88192011",
+  "status": "PAID",
+  "studentId": "usr_883920194",
+  "totalAmountCents": 1450
+}
+
+# 3. Malformed Body Rejected (400 Bad Request)
+$ curl -i -X POST http://localhost:5000/orders \
+  -H "Content-Type: application/json" \
+  -d '{
+    "studentId": "usr_883920194"
+  }'
+
+HTTP/1.1 400 BAD REQUEST
+Content-Type: application/problem+json
+Content-Length: 174
+
+{
+  "detail": "Field 'paymentMethodId' is required and must be a non-empty string.",
+  "status": 400,
+  "title": "Invalid Request Body",
+  "type": "about:blank"
+}
+
+# 4. Missing Resource (404 Not Found)
+$ curl -i -X GET http://localhost:5000/orders/ord_missing_9999
+
+HTTP/1.1 404 NOT FOUND
+Content-Type: application/problem+json
+Content-Length: 142
+
+{
+  "detail": "No order found with ID 'ord_missing_9999'.",
+  "status": 404,
+  "title": "Order Not Found",
+  "type": "about:blank"
+}
+
+# 5. Successful State-Changing Sub-Resource Call
+$ curl -i -X POST http://localhost:5000/orders/ord_9a8b7c6d/cancellation \
+  -H "Content-Type: application/json" \
+  -d '{"reason": "Student requested order cancellation."}'
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 158
+
+{
+  "cancellationReason": "Student requested order cancellation.",
+  "message": "Order successfully cancelled",
+  "orderId": "ord_9a8b7c6d",
+  "status": "CANCELLED"
+}
+
+# 6. State Conflict (409 Conflict - Repeated Cancellation)
+$ curl -i -X POST http://localhost:5000/orders/ord_9a8b7c6d/cancellation \
+  -H "Content-Type: application/json" \
+  -d '{"reason": "Student requested order cancellation again."}'
+
+HTTP/1.1 409 CONFLICT
+Content-Type: application/problem+json
+Content-Length: 148
+
+{
+  "detail": "Order 'ord_9a8b7c6d' is already cancelled.",
+  "status": 409,
+  "title": "State Conflict",
+  "type": "about:blank"
+}
