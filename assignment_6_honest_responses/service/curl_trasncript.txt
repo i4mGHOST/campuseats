@@ -1,0 +1,241 @@
+# 1. Success Transcript: Happy Path (201 Created with Location Header & JSON Body)
+
+$ curl -i -X POST http://localhost:5000/orders \
+-H "Content-Type: application/json" \
+-H "Accept: application/json" \
+-H "Idempotency-Key: key_demo_001" \
+-d '{
+      "studentId": "usr_883920194",
+      "paymentMethodId": "pm_card_visa_4242",
+      "items": [
+        {
+          "itemId": "item_01",
+          "name": "Veggie Supreme Burger",
+          "quantity": 2,
+          "unitPriceCents": 725
+        }
+      ]
+    }'
+
+HTTP/1.1 201 CREATED
+Content-Type: application/json; charset=utf-8
+Location: /orders/ord_9a8b7c6d
+Content-Length: 268
+
+{
+  "createdAt": "2026-10-13T10:15:30Z",
+  "items": [
+    {
+      "itemId": "item_01",
+      "name": "Veggie Supreme Burger",
+      "quantity": 2,
+      "unitPriceCents": 725
+    }
+  ],
+  "orderId": "ord_9a8b7c6d",
+  "paymentTransactionId": "tx_88192011",
+  "status": "PAID",
+  "studentId": "usr_883920194",
+  "totalAmountCents": 1450
+}
+
+------------------------------------------------------------------------
+
+# 2. Idempotent Repeat (Same Idempotency-Key Replays Original Result)
+
+$ curl -i -X POST http://localhost:5000/orders \
+-H "Content-Type: application/json" \
+-H "Idempotency-Key: key_demo_001" \
+-d '{
+      "studentId": "usr_883920194",
+      "paymentMethodId": "pm_card_visa_4242",
+      "items": [
+        {
+          "itemId": "item_01",
+          "name": "Veggie Supreme Burger",
+          "quantity": 2,
+          "unitPriceCents": 725
+        }
+      ]
+    }'
+
+HTTP/1.1 201 CREATED
+Content-Type: application/json; charset=utf-8
+Location: /orders/ord_9a8b7c6d
+X-Idempotent-Replay: true
+Content-Length: 268
+
+{
+  "createdAt": "2026-10-13T10:15:30Z",
+  "items": [
+    {
+      "itemId": "item_01",
+      "name": "Veggie Supreme Burger",
+      "quantity": 2,
+      "unitPriceCents": 725
+    }
+  ],
+  "orderId": "ord_9a8b7c6d",
+  "paymentTransactionId": "tx_88192011",
+  "status": "PAID",
+  "studentId": "usr_883920194",
+  "totalAmountCents": 1450
+}
+
+------------------------------------------------------------------------
+
+# 3. Field-Level Validation Failure (422 Unprocessable Entity with errors[] array)
+
+$ curl -i -X POST http://localhost:5000/orders \
+-H "Content-Type: application/json" \
+-d '{
+      "studentId": "",
+      "paymentMethodId": "pm_card_visa_4242",
+      "items": [
+        {
+          "itemId": "item_01",
+          "name": "Veggie Burger",
+          "quantity": 0,
+          "unitPriceCents": 725
+        }
+      ]
+    }'
+
+HTTP/1.1 422 UNPROCESSABLE ENTITY
+Content-Type: application/problem+json; charset=utf-8
+
+{
+  "detail": "Multiple request fields failed validation checks.",
+  "errors": [
+    {
+      "field": "studentId",
+      "reason": "Field 'studentId' is required and must be a non-empty string."
+    },
+    {
+      "field": "items[0].quantity",
+      "reason": "Quantity must be an integer greater than or equal to 1."
+    }
+  ],
+  "status": 422,
+  "title": "Unprocessable Entity",
+  "type": "https://api.campuseats.com/errors/validation-error"
+}
+
+------------------------------------------------------------------------
+
+# 4. Unknown ID Failure (404 Not Found with Problem Details)
+
+$ curl -i -X GET http://localhost:5000/orders/ord_missing_9999
+
+HTTP/1.1 404 NOT FOUND
+Content-Type: application/problem+json; charset=utf-8
+
+{
+  "detail": "No order found with ID 'ord_missing_9999'.",
+  "status": 404,
+  "title": "Order Not Found",
+  "type": "https://api.campuseats.com/errors/order-not-found"
+}
+
+------------------------------------------------------------------------
+
+# 5. Successful State-Changing Sub-Resource Cancellation
+
+$ curl -i -X POST http://localhost:5000/orders/ord_9a8b7c6d/cancellation \
+-H "Content-Type: application/json" \
+-d '{"reason": "Student requested order cancellation."}'
+
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  "cancellationReason": "Student requested order cancellation.",
+  "message": "Order successfully cancelled",
+  "orderId": "ord_9a8b7c6d",
+  "status": "CANCELLED"
+}
+
+------------------------------------------------------------------------
+
+# 6. Illegal State Transition / Conflict (409 Conflict)
+
+$ curl -i -X POST http://localhost:5000/orders/ord_9a8b7c6d/cancellation \
+-H "Content-Type: application/json" \
+-d '{"reason": "Trying to cancel again."}'
+
+HTTP/1.1 409 CONFLICT
+Content-Type: application/problem+json; charset=utf-8
+
+{
+  "detail": "Order 'ord_9a8b7c6d' is already cancelled.",
+  "status": 409,
+  "title": "State Conflict",
+  "type": "https://api.campuseats.com/errors/illegal-transition"
+}
+
+------------------------------------------------------------------------
+
+# 7. Content Negotiation Check: Requesting XML (Accept: application/xml)
+
+$ curl -i -X GET http://localhost:5000/orders/ord_9a8b7c6d \
+-H "Accept: application/xml"
+
+HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+
+<Order>
+  <createdAt>2026-10-13T10:15:30Z</createdAt>
+  <items>
+    <itemId>item_01</itemId>
+    <name>Veggie Supreme Burger</name>
+    <quantity>2</quantity>
+    <unitPriceCents>725</unitPriceCents>
+  </items>
+  <orderId>ord_9a8b7c6d</orderId>
+  <paymentTransactionId>tx_88192011</paymentTransactionId>
+  <status>CANCELLED</status>
+  <studentId>usr_883920194</studentId>
+  <totalAmountCents>1450</totalAmountCents>
+</Order>
+
+------------------------------------------------------------------------
+
+# 8. Content Negotiation Check: Unsupported Media Type (406 Not Acceptable)
+
+$ curl -i -X GET http://localhost:5000/orders/ord_9a8b7c6d \
+-H "Accept: application/yaml"
+
+HTTP/1.1 406 NOT ACCEPTABLE
+Content-Type: application/problem+json; charset=utf-8
+
+{
+  "detail": "Requested media type not supported. Use application/json or application/xml.",
+  "status": 406,
+  "title": "Not Acceptable",
+  "type": "https://api.campuseats.com/errors/not-acceptable"
+}
+
+------------------------------------------------------------------------
+
+# 9. Service Unavailable Check (503 with Retry-After Header)
+
+$ curl -i -X POST http://localhost:5000/orders \
+-H "Content-Type: application/json" \
+-d '{
+      "studentId": "usr_883920194",
+      "paymentMethodId": "pm_card_visa_4242",
+      "items": [{"itemId": "item_01", "name": "Burger", "quantity": 1, "unitPriceCents": 500}]
+    }'
+
+HTTP/1.1 503 SERVICE UNAVAILABLE
+Retry-After: 30
+Content-Type: application/problem+json; charset=utf-8
+
+{
+  "detail": "Payment service dependency unavailable: Connection refused",
+  "status": 503,
+  "title": "Service Unavailable",
+  "type": "https://api.campuseats.com/errors/service-unavailable"
+}
+
+------------------------------------------------------------------------

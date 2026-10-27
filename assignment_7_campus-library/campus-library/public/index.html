@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Campus Library</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Campus Library</h1>
+  <p class="sub">Authors and their books &mdash; data served by GraphQL</p>
+
+  <!-- Filter Bar for books(year: Int) -->
+  <div class="filter-bar">
+    <input id="filterYear" type="number" placeholder="Filter by year (e.g. 2020)" style="width: 200px;">
+    <button id="filterBtn">Filter Books</button>
+    <button id="resetBtn" style="background: #5d6577;">Show All</button>
+  </div>
+
+  <div id="list">Loading&hellip;</div>
+
+  <!-- Add Book Form -->
+  <form id="addForm">
+    <h3>Add a book</h3>
+    <input id="title" placeholder="Book title" required>
+    <input id="year" type="number" placeholder="Year" style="width:90px">
+    <select id="authorId">
+      <option value="1">Asha Patel</option>
+      <option value="2">Ravi Kumar</option>
+    </select>
+    <button type="submit">Add book</button>
+  </form>
+
+  <script>
+    const API = 'http://localhost:4000/';
+
+    // Helper: send GraphQL queries and mutations
+    async function gql(query, variables) {
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query, variables }),
+      });
+      const json = await res.json();
+      return json.data;
+    }
+
+    // 1. READ & FILTER: load authors and books (optionally filtered by year)
+    async function load(yearFilter = null) {
+      let data;
+      if (yearFilter) {
+        data = await gql(`
+          query GetFilteredBooks($y: Int) {
+            authors {
+              id
+              name
+              country
+            }
+            books(year: $y) {
+              id
+              title
+              year
+              author {
+                id
+              }
+            }
+          }
+        `, { y: Number(yearFilter) });
+
+        // Map filtered books back under their respective authors
+        const authorsMap = {};
+        data.authors.forEach(a => {
+          authorsMap[a.id] = { ...a, books: [] };
+        });
+        data.books.forEach(b => {
+          if (authorsMap[b.author.id]) {
+            authorsMap[b.author.id].books.push(b);
+          }
+        });
+
+        render(Object.values(authorsMap));
+      } else {
+        data = await gql(`
+          query {
+            authors {
+              id
+              name
+              country
+              books {
+                id
+                title
+                year
+              }
+            }
+          }
+        `);
+        render(data.authors);
+      }
+    }
+
+    // Render helper
+    function render(authors) {
+      document.getElementById('list').innerHTML = authors.map(a => `
+        <div class="author-card">
+          <h2>${a.name}</h2>
+          <div class="country">${a.country || ''}</div>
+          ${a.books.length > 0 
+            ? a.books.map(b => `
+              <div class="book">
+                <div class="book-info">
+                  <span>${b.title}</span>
+                  <span class="yr">(${b.year})</span>
+                </div>
+                <button class="delete-btn" onclick="removeBook('${b.id}')">Delete</button>
+              </div>
+            `).join('')
+            : '<div style="color: #777; font-size: 0.9rem; font-style: italic; margin-top: 0.3rem;">No books match this filter.</div>'
+          }
+        </div>
+      `).join('');
+    }
+
+    // 2. DELETE: remove a book via mutation
+    async function removeBook(id) {
+      await gql(`
+        mutation DeleteABook($id: ID!) {
+          deleteBook(id: $id)
+        }
+      `, { id });
+
+      const currentYear = document.getElementById('filterYear').value;
+      load(currentYear || null);
+    }
+
+    // Filter button click event
+    document.getElementById('filterBtn').addEventListener('click', () => {
+      const year = document.getElementById('filterYear').value;
+      if (year) load(year);
+    });
+
+    // Reset filter click event
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      document.getElementById('filterYear').value = '';
+      load();
+    });
+
+    // 3. WRITE: add a book via mutation
+    document.getElementById('addForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('title').value;
+      const year = Number(document.getElementById('year').value);
+      const authorId = document.getElementById('authorId').value;
+
+      await gql(`
+        mutation AddNewBook($t: String!, $y: Int, $a: ID!) {
+          addBook(title: $t, year: $y, authorId: $a) {
+            id
+          }
+        }
+      `, { t: title, y: year, a: authorId });
+
+      e.target.reset();
+      const currentYear = document.getElementById('filterYear').value;
+      load(currentYear || null);
+    });
+
+    load();
+  </script>
+</body>
+</html>

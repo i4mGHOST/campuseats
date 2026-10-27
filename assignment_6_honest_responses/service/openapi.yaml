@@ -1,0 +1,376 @@
+openapi: 3.0.3
+info:
+  title: CampusEats Orders Service API
+  description: RESTful microservice for CampusEats order management, state transitions, validation, and payment settlement.
+  version: 2.0.0
+servers:
+  - url: http://localhost:5000
+    description: Local Development Server
+
+paths:
+  /orders:
+    post:
+      summary: Create a new order
+      operationId: createOrder
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: false
+          schema:
+            type: string
+          description: Unique key to ensure idempotent request execution.
+        - in: header
+          name: Accept
+          required: false
+          schema:
+            type: string
+            enum: [application/json, application/xml]
+          description: Content negotiation header.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+      responses:
+        '201':
+          description: Order created successfully.
+          headers:
+            Location:
+              schema:
+                type: string
+              description: URI of the newly created order resource.
+            X-Idempotent-Replay:
+              schema:
+                type: boolean
+              description: Present if replayed via idempotency key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '400':
+          description: Malformed JSON or invalid schema attributes.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '406':
+          description: Not Acceptable (requested media type cannot be produced).
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '422':
+          description: Unprocessable entity / field-level validation failure / payment declined.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '503':
+          description: Service Unavailable / payment dependency failure.
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: Seconds the client should wait before retrying.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
+    get:
+      summary: List and filter orders
+      operationId: listOrders
+      parameters:
+        - in: query
+          name: student_id
+          required: false
+          schema:
+            type: string
+          description: Filter orders by student ID.
+        - in: query
+          name: status
+          required: false
+          schema:
+            type: string
+            enum: [CREATED, PAID, CANCELLED, FAILED, COMPLETED]
+          description: Filter orders by current state.
+        - in: header
+          name: Accept
+          required: false
+          schema:
+            type: string
+          description: Content negotiation header.
+      responses:
+        '200':
+          description: List of filtered orders.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderListResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OrderListResponse'
+        '406':
+          description: Not Acceptable format.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
+  /orders/{orderId}:
+    get:
+      summary: Get details of a single order
+      operationId: getOrder
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: string
+          description: Unique order identifier.
+        - in: header
+          name: Accept
+          required: false
+          schema:
+            type: string
+          description: Content negotiation header.
+      responses:
+        '200':
+          description: Order details found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '404':
+          description: Order not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '406':
+          description: Not Acceptable format.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
+  /orders/{orderId}/cancellation:
+    post:
+      summary: Cancel an existing order
+      operationId: cancelOrder
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: Accept
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancellationRequest'
+      responses:
+        '200':
+          description: Order successfully cancelled.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancellationResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CancellationResponse'
+        '400':
+          description: Invalid cancellation request body.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Order resource not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '409':
+          description: State conflict (illegal transition, order already cancelled or completed).
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
+components:
+  schemas:
+    OrderItem:
+      type: object
+      required:
+        - itemId
+        - name
+        - quantity
+        - unitPriceCents
+      properties:
+        itemId:
+          type: string
+          example: item_burger_01
+        name:
+          type: string
+          example: Veggie Supreme Burger
+        quantity:
+          type: integer
+          minimum: 1
+          example: 2
+        unitPriceCents:
+          type: integer
+          minimum: 0
+          example: 725
+
+    OrderRequest:
+      type: object
+      required:
+        - studentId
+        - paymentMethodId
+        - items
+      properties:
+        studentId:
+          type: string
+          example: usr_883920194
+        paymentMethodId:
+          type: string
+          example: pm_card_visa_4242
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+
+    OrderResponse:
+      type: object
+      required:
+        - orderId
+        - studentId
+        - status
+        - totalAmountCents
+        - items
+        - createdAt
+      properties:
+        orderId:
+          type: string
+          example: ord_551029481
+        studentId:
+          type: string
+          example: usr_883920194
+        status:
+          type: string
+          enum: [CREATED, PAID, CANCELLED, FAILED, COMPLETED]
+          example: PAID
+        totalAmountCents:
+          type: integer
+          example: 1450
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-09-08T10:00:00Z"
+        paymentTransactionId:
+          type: string
+          example: tx_9920148201
+        cancellationReason:
+          type: string
+          example: Student changed mind
+
+    OrderListResponse:
+      type: object
+      required:
+        - orders
+        - count
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderResponse'
+        count:
+          type: integer
+          example: 1
+
+    CancellationRequest:
+      type: object
+      required:
+        - reason
+      properties:
+        reason:
+          type: string
+          example: Order placed by mistake.
+
+    CancellationResponse:
+      type: object
+      required:
+        - message
+        - orderId
+        - status
+        - cancellationReason
+      properties:
+        message:
+          type: string
+          example: Order successfully cancelled
+        orderId:
+          type: string
+          example: ord_551029481
+        status:
+          type: string
+          example: CANCELLED
+        cancellationReason:
+          type: string
+          example: Order placed by mistake.
+
+    FieldError:
+      type: object
+      required:
+        - field
+        - reason
+      properties:
+        field:
+          type: string
+          example: items[0].quantity
+        reason:
+          type: string
+          example: Quantity must be an integer greater than or equal to 1.
+
+    ProblemDetails:
+      type: object
+      required:
+        - type
+        - title
+        - status
+        - detail
+      properties:
+        type:
+          type: string
+          example: https://api.campuseats.com/errors/validation-error
+        title:
+          type: string
+          example: Unprocessable Entity
+        status:
+          type: integer
+          example: 422
+        detail:
+          type: string
+          example: Multiple request fields failed validation checks.
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldError'
+          description: Optional list of field-level errors for 422 validation failures.
