@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CampusEats - Menu Service</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>CampusEats Menu</h1>
+  <p class="sub">Today's Special</p>
+
+  <div id="list">Loading dishes&hellip;</div>
+
+  <form id="addForm">
+    <h3 id="formTitle">Add or Update a Dish</h3>
+    <input id="name" placeholder="Dish name (e.g. Masala Dosa)" required>
+    <input id="price" type="number" step="0.01" placeholder="Price (₹)" style="width:110px" required>
+    <select id="available">
+      <option value="true">Available</option>
+      <option value="false">Unavailable</option>
+    </select>
+    <button type="submit" id="submitBtn">Save Dish</button>
+  </form>
+
+  <script>
+    const API = 'http://localhost:4000/';
+
+    async function gql(query, variables) {
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query, variables }),
+      });
+      const json = await res.json();
+      return json.data;
+    }
+
+    async function loadDishes() {
+      const data = await gql(`
+        query {
+          dishes {
+            id
+            name
+            price
+            available
+          }
+        }
+      `);
+
+      document.getElementById('list').innerHTML = data.dishes.map(d => `
+        <div class="dish-card">
+          <div class="dish-info">
+            <h2>${d.name}</h2>
+            <div class="dish-meta">Price: ₹${d.price}</div>
+          </div>
+          <div>
+            <span class="badge ${d.available ? 'available' : 'unavailable'}">
+              ${d.available ? 'Available' : 'Unavailable'}
+            </span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('addForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const price = parseFloat(document.getElementById('price').value);
+      const available = document.getElementById('available').value === 'true';
+
+      // Calls the new upsertDish mutation
+      await gql(`
+        mutation UpsertDishMutation($n: String!, $p: Float!, $a: Boolean!) {
+          upsertDish(name: $n, price: $p, available: $a) {
+            id
+            name
+          }
+        }
+      `, { n: name, p: price, a: available });
+
+      e.target.reset();
+      loadDishes();
+    });
+
+    loadDishes();
+  </script>
+</body>
+</html>
