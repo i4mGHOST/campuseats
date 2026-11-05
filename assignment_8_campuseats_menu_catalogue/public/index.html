@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>"CampusEats" menu/catalogue path</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>CampusEats Catalogue section</h1>
+  <p class="sub">The menu &mdash; served by a REST API (Node + Express)</p>
+  
+  <div id="list">Loading&hellip;</div>
+
+  <form id="addForm">
+    <h3>Add a dish</h3>
+    <input id="name" placeholder="Dish name" required>
+    <input id="price" type="number" placeholder="Price (rupees)">
+    <button type="submit">Add dish</button>
+  </form>
+
+  <script>
+    // 1. READ: GET /items, then render the list on screen
+    async function load() {
+      try {
+        const res = await fetch('/items');
+        const items = await res.json();
+        document.getElementById('list').innerHTML = items.map(i => `
+          <div class="dish">
+            <span class="name">${i.name}</span>
+            <span class="price">&#8377;${i.price}</span>
+          </div>
+        `).join('');
+      } catch (err) {
+        document.getElementById('list').innerHTML = 'Failed to load menu.';
+      }
+    }
+
+    // 2. WRITE: Form POSTs a new dish, then refreshes the list automatically
+    document.getElementById('addForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const price = document.getElementById('price').value;
+
+      await fetch('/items', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, price })
+      });
+
+      e.target.reset();
+      load();
+    });
+
+    // Initial load when page opens
+    load();
+  </script>
+
+</body>
+</html>
