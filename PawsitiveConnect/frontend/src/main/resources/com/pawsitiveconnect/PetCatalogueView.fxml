@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;" stylesheets="@global-theme.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pawsitiveconnect.PetCatalogueController">
+
+    <VBox spacing="18.0" styleClass="content-area">
+        <padding>
+            <Insets bottom="32.0" left="28.0" right="28.0" top="20.0" />
+        </padding>
+
+        <!-- ================= TOP OPERATIONS & SEARCH HEADER ================= -->
+        <HBox alignment="CENTER_LEFT" spacing="16.0">
+            <VBox spacing="3.0" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="6.0">
+                    <Label style="-fx-font-size: 14px;" text="🐾" />
+                    <Label fx:id="registryCountLabel" style="-fx-text-fill: #2c694e; -fx-font-weight: bold; -fx-font-size: 11px;" text="SHELTER REGISTRY • LOADING..." />
+                </HBox>
+                <Label styleClass="text-main-title" text="Pet Catalogue" />
+                <Label styleClass="text-subtitle" text="Manage active intake rosters, medical recovery statuses, and adoption placements." />
+            </VBox>
+
+            <!-- Search Field & Add Pet Action -->
+            <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                <StackPane alignment="CENTER_RIGHT">
+                    <TextField fx:id="searchField" prefHeight="40.0" prefWidth="300.0" promptText="🔍  Search pets by breed or name..." styleClass="search-field" />
+                    <Button fx:id="clearSearchBtn" onAction="#handleClearSearch" style="-fx-background-color: transparent; -fx-cursor: hand; -fx-padding: 0 10 0 0;" text="✕" visible="false" />
+                </StackPane>
+
+                <Button onAction="#handleOpenAddPetModal" styleClass="emergency-button" text="+ Add Pet">
+                    <font><Font name="System Bold" size="13.0" /></font>
+                </Button>
+            </HBox>
+        </HBox>
+
+        <!-- ================= FILTER PILLS & LEDGER METRICS ================= -->
+        <HBox alignment="CENTER_LEFT" spacing="12.0">
+            <!-- Filter Pills -->
+            <HBox alignment="CENTER_LEFT" spacing="8.0" HBox.hgrow="ALWAYS">
+                <Button fx:id="filterAllBtn" onAction="#handleFilterAll" styleClass="filter-pill-active" text="All" />
+                <Button fx:id="filterDogsBtn" onAction="#handleFilterDogs" styleClass="filter-pill" text="🐶 Dogs" />
+                <Button fx:id="filterCatsBtn" onAction="#handleFilterCats" styleClass="filter-pill" text="🐱 Cats" />
+                <Button fx:id="filterAvailableBtn" onAction="#handleFilterAvailable" styleClass="filter-pill" text="● Available" />
+                <Button fx:id="filterMedicalBtn" onAction="#handleFilterMedical" styleClass="filter-pill" text="● In Medical Care" />
+                <Button fx:id="filterPendingBtn" onAction="#handleFilterPending" styleClass="filter-pill" text="● Pending" />
+            </HBox>
+
+            <!-- Status Tallies -->
+            <HBox alignment="CENTER_RIGHT" spacing="8.0">
+                <Label fx:id="readyBadge" styleClass="pill-green" text="✓ 0 Ready" />
+                <Label fx:id="pendingBadge" styleClass="pill-gray" text="⏱ 0 Pending" />
+                <Label fx:id="medicalBadge" styleClass="pill-red" text="🩺 0 Critical" />
+            </HBox>
+        </HBox>
+
+        <!-- ================= PET CARD GRID ================= -->
+        <FlowPane fx:id="petGridPane" hgap="18.0" vgap="18.0" />
+
+        <!-- ================= EMPTY STATE CONTAINER (Hidden by default) ================= -->
+        <VBox fx:id="noResultsBox" managed="false" spacing="12.0" styleClass="empty-state-box" visible="false">
+            <Label style="-fx-font-size: 38px;" text="🔎" />
+            <Label styleClass="text-card-header" text="No matching shelter pets found" />
+            <Label styleClass="text-card-muted" text="Try refining your keyword search or adjusting the active category filters." />
+            <Button onAction="#handleResetFilters" styleClass="secondary-action-button" text="Clear all filters" />
+        </VBox>
+    </VBox>
+</ScrollPane>

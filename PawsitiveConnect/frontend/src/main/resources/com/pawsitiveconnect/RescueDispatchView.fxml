@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;" stylesheets="@global-theme.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pawsitiveconnect.RescueDispatchController">
+
+    <VBox spacing="18.0" styleClass="content-area">
+        <padding>
+            <Insets bottom="32.0" left="28.0" right="28.0" top="20.0" />
+        </padding>
+
+        <!-- ================= TOP HEADER & ACTION HORIZON ================= -->
+        <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="dashboard-card">
+            <VBox spacing="3.0" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="6.0">
+                    <StackPane maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" style="-fx-background-color: #ffdad4; -fx-background-radius: 999px;">
+                        <Label style="-fx-font-size: 12px;" text="🚨" />
+                    </StackPane>
+                    <Label style="-fx-text-fill: #2c694e; -fx-font-weight: bold; -fx-font-size: 11px;" text="FIELD TRIAGE &amp; COMMAND" />
+                </HBox>
+                <Label styleClass="text-main-title" text="Rescue Dispatch &amp; Incidents" />
+            </VBox>
+
+            <!-- Search Field and Fast Intake Button -->
+            <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                <TextField fx:id="searchField" prefHeight="40.0" prefWidth="280.0" promptText="🔍  Search active dispatches..." styleClass="search-field" />
+                <Button onAction="#handleOpenNewEmergencyModal" styleClass="amber-cta-button" text="+ New Emergency Report" />
+            </HBox>
+        </HBox>
+
+        <!-- ================= 4 STATUS METRIC CARDS ================= -->
+        <HBox spacing="14.0">
+            <!-- 1. Critical Active -->
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="bento-metric-card" HBox.hgrow="ALWAYS">
+                <StackPane maxHeight="42.0" maxWidth="42.0" minHeight="42.0" minWidth="42.0" style="-fx-background-color: #ffdad6; -fx-background-radius: 999px;">
+                    <SVGPath content="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="#93000A" scaleX="0.8" scaleY="0.8" />
+                </StackPane>
+                <VBox spacing="1.0">
+                    <Label styleClass="text-card-muted" text="CRITICAL ACTIVE" />
+                    <Label fx:id="criticalCountLabel" styleClass="metric-num-coral" style="-fx-font-size: 20px;" text="0" />
+                </VBox>
+            </HBox>
+
+            <!-- 2. High Priority -->
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="bento-metric-card" HBox.hgrow="ALWAYS">
+                <StackPane maxHeight="42.0" maxWidth="42.0" minHeight="42.0" minWidth="42.0" style="-fx-background-color: #ffdad4; -fx-background-radius: 999px;">
+                    <SVGPath content="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" fill="#8A1C10" scaleX="0.75" scaleY="0.75" />
+                </StackPane>
+                <VBox spacing="1.0">
+                    <Label styleClass="text-card-muted" text="HIGH PRIORITY" />
+                    <Label fx:id="highPriorityLabel" styleClass="metric-num-coral" style="-fx-font-size: 20px;" text="0" />
+                </VBox>
+            </HBox>
+
+            <!-- 3. Units Deployed -->
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="bento-metric-card" HBox.hgrow="ALWAYS">
+                <StackPane maxHeight="42.0" maxWidth="42.0" minHeight="42.0" minWidth="42.0" style="-fx-background-color: #aeeecb; -fx-background-radius: 999px;">
+                    <Label style="-fx-font-size: 18px;" text="🚐" />
+                </StackPane>
+                <VBox spacing="1.0">
+                    <Label styleClass="text-card-muted" text="UNITS DEPLOYED" />
+                    <Label fx:id="unitsDeployedLabel" styleClass="metric-num-green" style="-fx-font-size: 20px;" text="0" />
+                </VBox>
+            </HBox>
+
+            <!-- 4. Pending Assignment -->
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="bento-metric-card" HBox.hgrow="ALWAYS">
+                <StackPane maxHeight="42.0" maxWidth="42.0" minHeight="42.0" minWidth="42.0" style="-fx-background-color: #e3ebd9; -fx-background-radius: 999px;">
+                    <Label style="-fx-font-size: 18px;" text="⏱" />
+                </StackPane>
+                <VBox spacing="1.0">
+                    <Label styleClass="text-card-muted" text="PENDING ASSIGNMENT" />
+                    <Label fx:id="pendingCountLabel" styleClass="text-main-title" style="-fx-font-size: 20px;" text="0" />
+                </VBox>
+            </HBox>
+        </HBox>
+
+        <!-- ================= ACTIVE INCIDENTS STREAM ================= -->
+        <VBox spacing="12.0">
+            <!-- Stream Header Strip -->
+            <HBox alignment="CENTER_LEFT" spacing="8.0">
+                <Label style="-fx-font-size: 16px;" text="📡" />
+                <Label styleClass="text-card-header" text="Active Incidents Stream" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="streamCountBadge" styleClass="pill-gray" text="Showing 0 recorded events" />
+            </HBox>
+
+            <!-- Dynamic Incident Cards List -->
+            <VBox fx:id="dispatchListContainer" spacing="12.0" />
+
+            <!-- Empty Search State -->
+            <VBox fx:id="noResultsBox" managed="false" spacing="8.0" styleClass="empty-state-box" visible="false">
+                <Label style="-fx-font-size: 32px;" text="🔍" />
+                <Label styleClass="text-card-header" text="No matching incidents found" />
+                <Label styleClass="text-card-muted" text="Adjust your search keyword to view other reports." />
+            </VBox>
+        </VBox>
+
+        <!-- ================= DISPATCH ANALYTICS & RESPONSE EFFICIENCY ================= -->
+        <VBox spacing="14.0" styleClass="dashboard-card">
+            <HBox alignment="CENTER_LEFT">
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                    <Label style="-fx-font-size: 16px;" text="📊" />
+                    <Label styleClass="text-card-header" text="Dispatch Analytics &amp; Response Efficiency" />
+                </HBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <Label style="-fx-text-fill: #2c694e; -fx-font-weight: bold; -fx-font-size: 12px;" text="Average Response Time: 8.4 mins" />
+            </HBox>
+
+            <HBox spacing="16.0">
+                <!-- Stat 1: Triaged Today -->
+                <VBox spacing="6.0" styleClass="notice-box" HBox.hgrow="ALWAYS">
+                    <Label styleClass="text-card-muted" text="Triaged Today" />
+                    <Label styleClass="text-main-title" style="-fx-font-size: 18px;" text="14 Calls" />
+                    <ProgressBar maxWidth="Infinity" progress="0.85" styleClass="progress-bar-green" />
+                </VBox>
+
+                <!-- Stat 2: Live Fleet -->
+                <VBox spacing="6.0" styleClass="notice-box" HBox.hgrow="ALWAYS">
+                    <Label styleClass="text-card-muted" text="Live Rescue Fleet" />
+                    <Label styleClass="text-main-title" style="-fx-font-size: 18px;" text="6 Mobile Units" />
+                    <ProgressBar maxWidth="Infinity" progress="0.66" styleClass="progress-bar-coral" />
+                </VBox>
+
+                <!-- Stat 3: Kennels Open -->
+                <VBox spacing="6.0" styleClass="notice-box" HBox.hgrow="ALWAYS">
+                    <Label styleClass="text-card-muted" text="Shelter Intake Ready" />
+                    <Label styleClass="text-main-title" style="-fx-font-size: 18px;" text="12 Kennels Open" />
+                    <ProgressBar maxWidth="Infinity" progress="0.40" styleClass="progress-bar-blue" />
+                </VBox>
+            </HBox>
+        </VBox>
+    </VBox>
+</ScrollPane>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;" stylesheets="@global-theme.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pawsitiveconnect.TransactionLedgerController">
+
+    <VBox spacing="18.0" styleClass="content-area">
+        <padding>
+            <Insets bottom="32.0" left="28.0" right="28.0" top="20.0" />
+        </padding>
+
+        <!-- ================= TOP HEADER HORIZON ================= -->
+        <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="notice-box">
+            <VBox spacing="3.0" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                    <Label styleClass="pill-green" text="● FINANCIAL OPERATIONS &amp; AUDIT TRAIL" />
+                    <Label styleClass="text-card-muted" text="• Real-time Sync" />
+                </HBox>
+                <Label styleClass="text-main-title" text="Financial &amp; Transaction Ledger" />
+                <Label styleClass="text-subtitle" text="Unified record of adoption fees, donor contributions, medical sponsorships, and payment settlements." />
+            </VBox>
+
+            <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                <Button onAction="#handleExportCsv" styleClass="secondary-action-button" text="📥 Export CSV" />
+                <Button onAction="#handleOpenNewTransactionModal" styleClass="emergency-button" text="+ New Transaction" />
+            </HBox>
+        </HBox>
+
+        <!-- ================= 4 FINANCIAL OVERVIEW BENTO CARDS ================= -->
+        <HBox spacing="14.0">
+            <!-- 1. Gross Inflow -->
+            <VBox spacing="6.0" styleClass="bento-metric-card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="text-card-muted" text="GROSS INFLOW (MTD)" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label style="-fx-font-size: 16px;" text="💵" />
+                </HBox>
+                <!-- Escaped leading dollar sign: \$0.00 -->
+                <Label fx:id="grossInflowLabel" styleClass="text-main-title" style="-fx-font-size: 24px;" text="\$0.00" />
+                <Label style="-fx-text-fill: #2c694e; -fx-font-weight: bold; -fx-font-size: 11px;" text="📈 +18.4% vs prev period" />
+            </VBox>
+
+            <!-- 2. Adoption Fees Collected -->
+            <VBox spacing="6.0" styleClass="bento-metric-card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="text-card-muted" text="ADOPTION FEES COLLECTED" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label style="-fx-font-size: 16px;" text="🐾" />
+                </HBox>
+                <!-- Escaped leading dollar sign: \$0.00 -->
+                <Label fx:id="adoptionFeesLabel" styleClass="metric-num-coral" style="-fx-font-size: 24px;" text="\$0.00" />
+                <Label fx:id="settledRecordsBadge" styleClass="pill-green" text="0 settled records" />
+            </VBox>
+
+            <!-- 3. Pending Settlements -->
+            <VBox spacing="6.0" styleClass="bento-metric-card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="text-card-muted" text="PENDING SETTLEMENTS" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label style="-fx-font-size: 16px;" text="⏳" />
+                </HBox>
+                <!-- Escaped leading dollar sign: \$0.00 -->
+                <Label fx:id="pendingAmountLabel" styleClass="text-main-title" style="-fx-font-size: 24px;" text="\$0.00" />
+                <Label fx:id="pendingCountBadge" styleClass="pill-gray" text="0 pending transactions" />
+            </VBox>
+
+            <!-- 4. Donations & Sponsorships -->
+            <VBox spacing="6.0" styleClass="bento-metric-card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="text-card-muted" text="DONATION SPONSORSHIPS" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label style="-fx-font-size: 16px;" text="🤝" />
+                </HBox>
+                <!-- Escaped leading dollar sign: \$0.00 -->
+                <Label fx:id="donationsLabel" styleClass="metric-num-blue" style="-fx-font-size: 24px;" text="\$0.00" />
+                <Label style="-fx-text-fill: #2c694e; -fx-font-size: 11px;" text="✓ Verified Community Sponsors" />
+            </VBox>
+        </HBox>
+
+        <!-- ================= SEARCH & FILTER CONTROLS ================= -->
+        <HBox alignment="CENTER_LEFT" spacing="12.0">
+            <!-- Filter Pills -->
+            <HBox alignment="CENTER_LEFT" spacing="8.0" HBox.hgrow="ALWAYS">
+                <Button fx:id="filterAllBtn" onAction="#handleFilterAll" styleClass="filter-pill-active" text="All Transactions" />
+                <Button fx:id="filterCompletedBtn" onAction="#handleFilterCompleted" styleClass="filter-pill" text="Completed" />
+                <Button fx:id="filterPendingBtn" onAction="#handleFilterPending" styleClass="filter-pill" text="Pending" />
+                <Button fx:id="filterAdoptionsBtn" onAction="#handleFilterAdoptions" styleClass="filter-pill" text="Adoption Fees" />
+                <Button fx:id="filterDonationsBtn" onAction="#handleFilterDonations" styleClass="filter-pill" text="Donations" />
+            </HBox>
+
+            <!-- Search Field -->
+            <TextField fx:id="searchField" prefHeight="40.0" prefWidth="280.0" promptText="🔍  Search transactions or payers..." styleClass="search-field" />
+        </HBox>
+
+        <!-- ================= TRANSACTION RECORDS LIST ================= -->
+        <VBox fx:id="ledgerListContainer" spacing="10.0" />
+
+        <!-- Empty State Container -->
+        <VBox fx:id="noResultsBox" managed="false" spacing="8.0" styleClass="empty-state-box" visible="false">
+            <Label style="-fx-font-size: 32px;" text="🔍" />
+            <Label styleClass="text-card-header" text="No matching transactions found" />
+            <Label styleClass="text-card-muted" text="Try adjusting your keyword or reset category filter tabs." />
+        </VBox>
+
+        <!-- ================= AUDIT & COMPLIANCE FOOTER ================= -->
+        <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="dashboard-card">
+            <HBox alignment="CENTER_LEFT" spacing="8.0">
+                <Label styleClass="pill-green" text="🔒 Payment Gateway: Stripe &amp; ACH Connected" />
+                <Label styleClass="text-card-muted" text="• SSL 256-bit Encrypted Ledger" />
+            </HBox>
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="footerCountLabel" styleClass="text-card-muted" text="Showing 0 of 0 records" />
+        </HBox>
+    </VBox>
+</ScrollPane>

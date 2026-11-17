@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;" stylesheets="@global-theme.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pawsitiveconnect.MedicalHistoryController">
+
+    <VBox spacing="18.0" styleClass="content-area">
+        <padding>
+            <Insets bottom="32.0" left="28.0" right="28.0" top="20.0" />
+        </padding>
+
+        <!-- ================= TOP ACTION / METRIC HORIZON ================= -->
+        <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="notice-box">
+            <VBox spacing="3.0" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                    <Label styleClass="pill-green" text="● Live Shelter Clinic Active" />
+                    <Label styleClass="text-card-muted" text="• Central Ward 04" />
+                </HBox>
+                <Label styleClass="text-main-title" text="Welfare &amp; Medical Records" />
+                <Label styleClass="text-subtitle" text="Real-time clinical interventions, vaccination timelines, and post-operative recovery charts." />
+            </VBox>
+
+            <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                <TextField fx:id="searchField" prefHeight="40.0" prefWidth="240.0" promptText="🔍  Filter by pet or treatment..." styleClass="search-field" />
+                <Button fx:id="addMedicalEntryBtn" onAction="#handleOpenAddEntryModal" styleClass="emergency-button" text="+ Add Medical Entry" />
+            </HBox>
+        </HBox>
+
+        <!-- ================= QUICK VITAL GLANCE BENTO METRICS ================= -->
+        <HBox spacing="14.0">
+            <!-- 1. Vaccinated Intake -->
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="bento-metric-card" HBox.hgrow="ALWAYS">
+                <StackPane maxHeight="42.0" maxWidth="42.0" minHeight="42.0" minWidth="42.0" style="-fx-background-color: #aeeecb; -fx-background-radius: 999px;">
+                    <SVGPath content="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" fill="#225A40" scaleX="0.75" scaleY="0.75" />
+                </StackPane>
+                <VBox spacing="1.0">
+                    <Label styleClass="text-card-muted" text="VACCINATED INTAKE" />
+                    <Label styleClass="text-main-title" style="-fx-font-size: 20px;" text="94.2%" />
+                    <Label style="-fx-text-fill: #2c694e; -fx-font-weight: bold; -fx-font-size: 11px;" text="+4.1% this week" />
+                </VBox>
+            </HBox>
+
+            <!-- 2. Critical Rest -->
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="bento-metric-card" HBox.hgrow="ALWAYS">
+                <StackPane maxHeight="42.0" maxWidth="42.0" minHeight="42.0" minWidth="42.0" style="-fx-background-color: #ffdad6; -fx-background-radius: 999px;">
+                    <SVGPath content="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z" fill="#93000A" scaleX="0.8" scaleY="0.8" />
+                </StackPane>
+                <VBox spacing="1.0">
+                    <Label styleClass="text-card-muted" text="CRITICAL REST" />
+                    <Label fx:id="criticalCountLabel" styleClass="metric-num-coral" style="-fx-font-size: 20px;" text="02 Cases" />
+                    <Label styleClass="text-card-muted" text="Requires Monitoring" />
+                </VBox>
+            </HBox>
+
+            <!-- 3. Pending Boosters -->
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="bento-metric-card" HBox.hgrow="ALWAYS">
+                <StackPane maxHeight="42.0" maxWidth="42.0" minHeight="42.0" minWidth="42.0" style="-fx-background-color: #d8e2ff; -fx-background-radius: 999px;">
+                    <Label style="-fx-font-size: 18px;" text="💉" />
+                </StackPane>
+                <VBox spacing="1.0">
+                    <Label styleClass="text-card-muted" text="PENDING BOOSTERS" />
+                    <Label fx:id="pendingBoostersLabel" styleClass="metric-num-blue" style="-fx-font-size: 20px;" text="07 Due" />
+                    <Label styleClass="text-card-muted" text="Next 48 Hours" />
+                </VBox>
+            </HBox>
+
+            <!-- 4. Attending Staff -->
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="bento-metric-card" HBox.hgrow="ALWAYS">
+                <StackPane maxHeight="42.0" maxWidth="42.0" minHeight="42.0" minWidth="42.0" style="-fx-background-color: #e3ebd9; -fx-background-radius: 999px;">
+                    <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c694e;" text="✚" />
+                </StackPane>
+                <VBox spacing="1.0">
+                    <Label styleClass="text-card-muted" text="ATTENDING STAFF" />
+                    <Label styleClass="text-main-title" style="-fx-font-size: 20px;" text="03 Vets" />
+                    <Label style="-fx-text-fill: #2c694e; -fx-font-weight: bold; -fx-font-size: 11px;" text="Drs. Jenkins, Sloan, Chen" />
+                </VBox>
+            </HBox>
+        </HBox>
+
+        <!-- ================= MASTER CLINICAL RECORDS TABLE CONTAINER ================= -->
+        <VBox styleClass="medical-table-card">
+            <!-- Table Header Utility Strip -->
+            <HBox alignment="CENTER_LEFT" spacing="12.0" style="-fx-background-color: #e9f1de; -fx-background-radius: 20px 20px 0 0; -fx-padding: 12px 20px;">
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                    <Label style="-fx-font-size: 16px;" text="📋" />
+                    <Label styleClass="text-card-header" text="Registered Clinical Protocols" />
+                    <Label fx:id="recordCountBadge" styleClass="pill-gray" text="Loading..." />
+                </HBox>
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <!-- Action Tools -->
+                <HBox alignment="CENTER_RIGHT" spacing="8.0">
+                    <Button onAction="#handleResetFilter" styleClass="table-tool-button" text="Reset Filters" />
+                    <Button onAction="#handleExportCsv" styleClass="table-tool-button" text="📥 Export CSV" />
+                    <Button onAction="#loadMedicalDataFromBackend" styleClass="table-tool-button" text="🔄 Refresh" />
+                </HBox>
+            </HBox>
+
+            <!-- TableView -->
+            <TableView fx:id="medicalTable" minHeight="360.0" prefHeight="400.0" styleClass="medical-table">
+                <columns>
+                    <TableColumn fx:id="petNameCol" prefWidth="180.0" text="PET NAME" />
+                    <TableColumn fx:id="treatmentCol" prefWidth="200.0" text="TREATMENT / VACCINE" />
+                    <TableColumn fx:id="dateCol" prefWidth="150.0" text="DATE ADMINISTERED" />
+                    <TableColumn fx:id="vetCol" prefWidth="180.0" text="VETERINARIAN" />
+                    <TableColumn fx:id="notesCol" prefWidth="280.0" text="NOTES / STATUS" />
+                    <TableColumn fx:id="actionsCol" prefWidth="100.0" style="-fx-alignment: CENTER;" text="ACTIONS" />
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
+            </TableView>
+
+            <!-- Table Footer -->
+            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #eef6e4; -fx-background-radius: 0 0 20px 20px; -fx-padding: 10px 20px;">
+                <Label fx:id="footerCountLabel" styleClass="text-card-muted" text="Showing 0 records" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label styleClass="text-card-muted" text="Database Synced with Local Shelter Vault" />
+            </HBox>
+        </VBox>
+
+        <!-- ================= SUPPLEMENTARY CLINICAL CONTEXT PANEL ================= -->
+        <HBox spacing="16.0">
+            <!-- 1. Operational Directive -->
+            <VBox prefWidth="380.0" spacing="10.0" styleClass="notice-box">
+                <HBox alignment="CENTER_LEFT" spacing="6.0">
+                    <Label style="-fx-font-size: 16px;" text="⚠️" />
+                    <Label style="-fx-text-fill: #a83223; -fx-font-weight: bold; -fx-font-size: 13px;" text="Clinical Notice" />
+                </HBox>
+                <Label styleClass="text-card-header" text="Post-Surgical Triage Checkpoints" />
+                <Label styleClass="text-subtitle" text="Patients with splints and post-op stitches require daily visual observations until suture release validation." wrapText="true" />
+                <Region VBox.vgrow="ALWAYS" />
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                    <Label styleClass="pill-gray" text="Protocol MD-88" />
+                    <Label styleClass="text-card-muted" text="Updated 2h ago" />
+                </HBox>
+            </VBox>
+
+            <!-- 2. Medical Vault Snapshot -->
+            <VBox spacing="10.0" styleClass="bento-metric-card" HBox.hgrow="ALWAYS">
+                <Label style="-fx-text-fill: #2c694e; -fx-font-weight: bold; -fx-font-size: 11px;" text="REFERENCE LEDGER SNAPSHOT" />
+                <Label styleClass="text-main-title" style="-fx-font-size: 18px;" text="Synchronized Medical Vault" />
+                <Label styleClass="text-subtitle" text="Every clinical intervention logs microchip telemetry, medication batches, and veterinary signatures directly to county shelter verification ledgers." wrapText="true" />
+                <Region VBox.vgrow="ALWAYS" />
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <Button onAction="#handleAuditLogs" styleClass="secondary-action-button" text="Audit Logs" />
+                    <Button onAction="#handleDispensePharmacy" styleClass="secondary-action-button" text="Dispense Pharmacy" />
+                </HBox>
+            </VBox>
+        </HBox>
+    </VBox>
+</ScrollPane>

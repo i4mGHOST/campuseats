@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;" stylesheets="@global-theme.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pawsitiveconnect.DashboardController">
+
+    <VBox spacing="20.0" styleClass="content-area">
+        <padding>
+            <Insets bottom="32.0" left="28.0" right="28.0" top="20.0" />
+        </padding>
+
+        <!-- ================= TOP HEADER SECTION ================= -->
+        <HBox alignment="CENTER_LEFT" spacing="16.0">
+            <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                    <Label styleClass="pill-green" text="● Shelter Hub Alpha • Live Telemetry" />
+                    <Label styleClass="text-card-muted" text="Sync: Just now" />
+                </HBox>
+                <Label styleClass="text-main-title" text="Shelter Command Dashboard" />
+                <Label styleClass="text-subtitle" text="Welcome back! Here is a summary of current shelter operations." />
+            </VBox>
+
+            <!-- Quick Action Buttons -->
+            <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                <Button onAction="#handleEmergencyRescue" styleClass="emergency-button" text="🚨 Report Emergency Rescue" />
+                <Button onAction="#handleLogIntake" styleClass="secondary-action-button" text="+ Log Intake" />
+                <Button onAction="#handleScheduleVet" styleClass="secondary-action-button" text="📅 Schedule Vet" />
+            </HBox>
+        </HBox>
+
+        <!-- ================= 3 KPI METRIC CARDS ================= -->
+        <HBox spacing="18.0">
+            <!-- 1. Total Pets in Care -->
+            <VBox spacing="8.0" styleClass="dashboard-card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="text-card-header" text="Total Pets in Care" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label styleClass="pill-green" text="📈 +3 this week" />
+                </HBox>
+                <HBox alignment="BASELINE_LEFT" spacing="6.0">
+                    <Label styleClass="metric-num-green" text="24" />
+                    <Label styleClass="text-card-muted" text="/ 30 kennel capacity" />
+                </HBox>
+
+                <!-- Sparkline Trendline SVG -->
+                <Pane maxHeight="32.0" minHeight="32.0" prefHeight="32.0">
+                    <SVGPath content="M 0 26 Q 35 22, 65 24 T 120 12 T 180 8 T 240 4" fill="TRANSPARENT" stroke="#2C694E" strokeLineCap="ROUND" strokeWidth="2.5" />
+                    <SVGPath content="M 0 26 Q 35 22, 65 24 T 120 12 T 180 8 T 240 4 L 240 32 L 0 32 Z" fill="#2C694E" opacity="0.12" />
+                </Pane>
+
+                <Separator opacity="0.25" />
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="text-card-muted" text="80% occupancy" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button onAction="#handleViewPets" styleClass="link-button-green" text="View all pets →" />
+                </HBox>
+            </VBox>
+
+            <!-- 2. Active Rescues -->
+            <VBox spacing="8.0" styleClass="dashboard-card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="text-card-header" text="Active Rescues" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label styleClass="pill-red" text="📍 2 units deployed" />
+                </HBox>
+                <HBox alignment="BASELINE_LEFT" spacing="6.0">
+                    <Label styleClass="metric-num-coral" text="5" />
+                    <Label styleClass="text-card-muted" text="in progress dispatch" />
+                </HBox>
+
+                <!-- Sparkline Trendline SVG -->
+                <Pane maxHeight="32.0" minHeight="32.0" prefHeight="32.0">
+                    <SVGPath content="M 0 28 Q 40 30, 75 16 T 140 14 T 190 6 T 240 2" fill="TRANSPARENT" stroke="#A83223" strokeLineCap="ROUND" strokeWidth="2.5" />
+                    <SVGPath content="M 0 28 Q 40 30, 75 16 T 140 14 T 190 6 T 240 2 L 240 32 L 0 32 Z" fill="#A83223" opacity="0.12" />
+                </Pane>
+
+                <Separator opacity="0.25" />
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="text-card-muted" text="Avg arrival 14 min" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button onAction="#handleLiveGps" styleClass="link-button-coral" text="Live GPS map →" />
+                </HBox>
+            </VBox>
+
+            <!-- 3. Pending Adoptions -->
+            <VBox spacing="8.0" styleClass="dashboard-card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="text-card-header" text="Pending Adoptions" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label styleClass="pill-gray" text="⏱ Awaiting review" />
+                </HBox>
+                <HBox alignment="BASELINE_LEFT" spacing="6.0">
+                    <Label styleClass="metric-num-blue" text="8" />
+                    <Label styleClass="text-card-muted" text="interviews scheduled" />
+                </HBox>
+
+                <!-- Sparkline Trendline SVG -->
+                <Pane maxHeight="32.0" minHeight="32.0" prefHeight="32.0">
+                    <SVGPath content="M 0 20 Q 50 28, 95 18 T 150 10 T 195 14 T 240 6" fill="TRANSPARENT" stroke="#0058BD" strokeLineCap="ROUND" strokeWidth="2.5" />
+                    <SVGPath content="M 0 20 Q 50 28, 95 18 T 150 10 T 195 14 T 240 6 L 240 32 L 0 32 Z" fill="#0058BD" opacity="0.12" />
+                </Pane>
+
+                <Separator opacity="0.25" />
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="text-card-muted" text="3 final sign-offs" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button onAction="#handleReviewQueue" styleClass="link-button-blue" text="Review queue →" />
+                </HBox>
+            </VBox>
+        </HBox>
+
+        <!-- ================= LOWER SPLIT SECTION ================= -->
+        <HBox spacing="18.0">
+            <!-- LEFT COLUMN: Dispatch Alert & Live Activity Feed -->
+            <VBox spacing="14.0" HBox.hgrow="ALWAYS">
+
+                <!-- Priority Rescue Banner -->
+                <HBox alignment="CENTER_LEFT" spacing="14.0" styleClass="dashboard-card">
+                    <!-- Clean SVG Alert Icon in Red Circle -->
+                    <StackPane maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" style="-fx-background-color: #ffdad6; -fx-background-radius: 999px;">
+                        <SVGPath content="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" fill="#93000A" scaleX="0.9" scaleY="0.9" />
+                    </StackPane>
+
+                    <VBox HBox.hgrow="ALWAYS" spacing="2.0">
+                        <Label styleClass="text-item-title" text="Active Rescue Priority #R-402" />
+                        <Label styleClass="text-item-sub" text="Van Unit 2 dispatched to Oakwood Ridge Park • Canine distress reported" />
+                    </VBox>
+
+                    <Button onAction="#handleContactDriver" styleClass="emergency-button" text="Contact Driver" />
+                </HBox>
+
+                <!-- Recent Intake & Medical Triage Card -->
+                <VBox spacing="10.0" styleClass="dashboard-card">
+                    <HBox alignment="CENTER_LEFT">
+                        <HBox alignment="CENTER_LEFT" spacing="8.0">
+                            <Label styleClass="text-card-header" text="Recent Intake &amp; Medical Triage" />
+                            <Label styleClass="pill-gray" text="Live Feed" />
+                        </HBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button onAction="#handleViewMedicalLedger" styleClass="link-button-coral" text="View Medical Ledger" />
+                    </HBox>
+
+                    <!-- Feed Rows -->
+                    <VBox spacing="4.0">
+                        <!-- Row 1: Bella -->
+                        <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="feed-row">
+                            <StackPane maxHeight="34.0" maxWidth="34.0" minHeight="34.0" minWidth="34.0" style="-fx-background-color: #aeeecb; -fx-background-radius: 999px;">
+                                <Label style="-fx-font-weight: bold; -fx-text-fill: #225a40; -fx-font-size: 11px;" text="BL" />
+                            </StackPane>
+                            <VBox HBox.hgrow="ALWAYS" spacing="1.0">
+                                <Label styleClass="text-item-title" text="Bella • Golden Mix" />
+                                <Label styleClass="text-item-sub" text="Tag #2041 • Routine Vaccination Completed" />
+                            </VBox>
+                            <Label styleClass="pill-green" text="Ready for Foster" />
+                            <Label styleClass="text-card-muted" text="12m ago" />
+                        </HBox>
+
+                        <!-- Row 2: Max -->
+                        <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="feed-row">
+                            <StackPane maxHeight="34.0" maxWidth="34.0" minHeight="34.0" minWidth="34.0" style="-fx-background-color: #e3ebd9; -fx-background-radius: 999px;">
+                                <Label style="-fx-font-weight: bold; -fx-text-fill: #171e13; -fx-font-size: 11px;" text="MX" />
+                            </StackPane>
+                            <VBox HBox.hgrow="ALWAYS" spacing="1.0">
+                                <Label styleClass="text-item-title" text="Max • Tabby Shorthair" />
+                                <Label styleClass="text-item-sub" text="Tag #2042 • Intake Examination &amp; Microchipping" />
+                            </VBox>
+                            <Label styleClass="pill-gray" text="In Quarantine (Day 1)" />
+                            <Label styleClass="text-card-muted" text="45m ago" />
+                        </HBox>
+
+                        <!-- Row 3: Charlie -->
+                        <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="feed-row">
+                            <StackPane maxHeight="34.0" maxWidth="34.0" minHeight="34.0" minWidth="34.0" style="-fx-background-color: #ffdad4; -fx-background-radius: 999px;">
+                                <Label style="-fx-font-weight: bold; -fx-text-fill: #8a1c10; -fx-font-size: 11px;" text="CH" />
+                            </StackPane>
+                            <VBox HBox.hgrow="ALWAYS" spacing="1.0">
+                                <Label styleClass="text-item-title" text="Charlie • Beagle Blend" />
+                                <Label styleClass="text-item-sub" text="Tag #2039 • Pre-Adoption Home Check Approved" />
+                            </VBox>
+                            <Label styleClass="pill-blue" text="Contract Signing Today" />
+                            <Label styleClass="text-card-muted" text="2h ago" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </VBox>
+
+            <!-- RIGHT COLUMN: Care Unit Capacity Bars -->
+            <VBox prefWidth="320.0" spacing="16.0" styleClass="dashboard-card">
+                <Label styleClass="text-card-header" text="Care Unit Availability" />
+
+                <!-- Meter 1: Canine Kennels -->
+                <VBox spacing="4.0">
+                    <HBox alignment="CENTER_LEFT">
+                        <Label styleClass="text-item-sub" text="Canine Kennels (18/20)" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label style="-fx-text-fill: #a83223; -fx-font-weight: bold; -fx-font-size: 11.5px;" text="90%" />
+                    </HBox>
+                    <ProgressBar maxWidth="Infinity" progress="0.90" styleClass="progress-bar-coral" />
+                </VBox>
+
+                <!-- Meter 2: Feline Cattery -->
+                <VBox spacing="4.0">
+                    <HBox alignment="CENTER_LEFT">
+                        <Label styleClass="text-item-sub" text="Feline Cattery (6/10)" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label style="-fx-text-fill: #2c694e; -fx-font-weight: bold; -fx-font-size: 11.5px;" text="60%" />
+                    </HBox>
+                    <ProgressBar maxWidth="Infinity" progress="0.60" styleClass="progress-bar-green" />
+                </VBox>
+
+                <!-- Meter 3: Isolation & Recovery -->
+                <VBox spacing="4.0">
+                    <HBox alignment="CENTER_LEFT">
+                        <Label styleClass="text-item-sub" text="Isolation &amp; Recovery (2/5)" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label style="-fx-text-fill: #0058bd; -fx-font-weight: bold; -fx-font-size: 11.5px;" text="40%" />
+                    </HBox>
+                    <ProgressBar maxWidth="Infinity" progress="0.40" styleClass="progress-bar-blue" />
+                </VBox>
+
+                <Region VBox.vgrow="ALWAYS" />
+                <Separator opacity="0.25" />
+
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="text-card-muted" text="Volunteers on duty: 11 staff" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button styleClass="link-button-coral" text="Shift Roster" />
+                </HBox>
+            </VBox>
+        </HBox>
+    </VBox>
+</ScrollPane>

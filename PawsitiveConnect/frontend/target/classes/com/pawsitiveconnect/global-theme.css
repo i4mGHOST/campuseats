@@ -1,0 +1,797 @@
+/* =============================================================================
+   Pawsitive Connect - Master Theme (Auth + Dashboard)
+   ============================================================================= */
+
+.root {
+    -fx-font-family: "Segoe UI", "Plus Jakarta Sans", "Helvetica Neue", sans-serif;
+    -fx-background-color: #f4fcea;
+}
+
+.paw-bg, .content-area {
+    -fx-background-color: #f4fcea;
+}
+
+/* =============================================================================
+   1. AUTHENTICATION SCREENS (LOGIN & REGISTER)
+   ============================================================================= */
+
+/* Floating Split-Pane Card */
+.main-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 28px;
+    -fx-effect: dropshadow(gaussian, rgba(27, 67, 50, 0.14), 30, 0, 0, 10);
+}
+
+/* Left Hero Pane (Dark Forest Gradient) */
+.hero-pane {
+    -fx-background-color: linear-gradient(to bottom right, #1b4332, #2d6a4f, #081c15);
+    -fx-background-radius: 28px 0 0 28px;
+}
+
+/* Force all text inside the dark hero pane to be white/mint */
+.hero-pane .label {
+    -fx-text-fill: #ffffff;
+}
+
+.hero-pane .hero-muted {
+    -fx-text-fill: #d7f6e4;
+}
+
+/* Semi-transparent Glass Pill on Hero */
+.glass-badge {
+    -fx-background-color: rgba(255, 255, 255, 0.12);
+    -fx-background-radius: 999px;
+    -fx-border-color: rgba(255, 255, 255, 0.20);
+    -fx-border-radius: 999px;
+    -fx-border-width: 1px;
+    -fx-padding: 4px 12px;
+}
+
+/* Semi-transparent Metric Card on Login Hero */
+.metric-card {
+    -fx-background-color: rgba(255, 255, 255, 0.10);
+    -fx-background-radius: 18px;
+    -fx-border-color: rgba(255, 255, 255, 0.15);
+    -fx-border-radius: 18px;
+    -fx-border-width: 1px;
+}
+
+/* Feature Perk Box on Register Hero */
+.perk-box {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(255, 255, 255, 0.12);
+    -fx-border-radius: 14px;
+    -fx-border-width: 1px;
+    -fx-padding: 10px 14px;
+}
+
+/* Clean Form Inputs */
+.form-input {
+    -fx-background-color: #f9fbf7;
+    -fx-border-color: #dbe4d3;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 10px 14px;
+    -fx-font-size: 13px;
+    -fx-text-fill: #171e13;
+    -fx-prompt-text-fill: #9ba396;
+}
+
+.form-input:focused {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e05a47;
+    -fx-effect: dropshadow(three-pass-box, rgba(224, 90, 71, 0.25), 8, 0, 0, 0);
+}
+
+/* ComboBox in Registration */
+.combo-box {
+    -fx-background-color: #f9fbf7;
+    -fx-border-color: #dbe4d3;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 4px 8px;
+    -fx-font-size: 13px;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #171e13;
+}
+
+.combo-box:focused {
+    -fx-border-color: #e05a47;
+}
+
+/* Primary Coral CTA Button */
+.primary-button {
+    -fx-background-color: #e05a47;
+    -fx-background-radius: 14px;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 12px 20px;
+    -fx-effect: dropshadow(gaussian, rgba(224, 90, 71, 0.35), 12, 0, 0, 4);
+}
+
+.primary-button:hover {
+    -fx-background-color: #cc4330;
+}
+
+.primary-button:pressed {
+    -fx-background-color: #aa3525;
+}
+
+/* Coral Link Button */
+.link-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e05a47;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+}
+
+.link-button:hover {
+    -fx-text-fill: #cc4330;
+    -fx-underline: true;
+}
+
+/* Password Eye Toggle Button */
+.eye-toggle-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #7c8872;
+    -fx-cursor: hand;
+    -fx-padding: 0 10px 0 0;
+    -fx-font-size: 12px;
+}
+
+.eye-toggle-btn:hover {
+    -fx-text-fill: #e05a47;
+}
+
+/* =============================================================================
+   2. DASHBOARD & SIDEBAR LAYOUT
+   ============================================================================= */
+
+/* Default label for light dashboard surfaces */
+.content-area .label {
+    -fx-text-fill: #171e13;
+}
+
+.text-main-title {
+    -fx-text-fill: #171e13;
+    -fx-font-size: 26px;
+    -fx-font-weight: 800;
+}
+
+.text-subtitle {
+    -fx-text-fill: #58413d;
+    -fx-font-size: 13.5px;
+}
+
+.text-card-header {
+    -fx-text-fill: #58413d;
+    -fx-font-size: 13.5px;
+    -fx-font-weight: bold;
+}
+
+.text-card-muted {
+    -fx-text-fill: #6e7968;
+    -fx-font-size: 11.5px;
+}
+
+.text-item-title {
+    -fx-text-fill: #171e13;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.text-item-sub {
+    -fx-text-fill: #6e7968;
+    -fx-font-size: 11px;
+}
+
+.metric-num-green {
+    -fx-text-fill: #2c694e;
+    -fx-font-size: 34px;
+    -fx-font-weight: 800;
+}
+
+.metric-num-coral {
+    -fx-text-fill: #a83223;
+    -fx-font-size: 34px;
+    -fx-font-weight: 800;
+}
+
+.metric-num-blue {
+    -fx-text-fill: #0058bd;
+    -fx-font-size: 34px;
+    -fx-font-weight: 800;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+    -fx-background-color: #eef6e4;
+    -fx-background-radius: 0 24px 24px 0;
+    -fx-effect: dropshadow(gaussian, rgba(45, 106, 79, 0.08), 24, 0, 4, 0);
+}
+
+.brand-badge {
+    -fx-background-color: #e9f1de;
+    -fx-background-radius: 16px;
+    -fx-padding: 8px 12px;
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #58413d;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-background-radius: 999px;
+    -fx-padding: 10px 16px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-cursor: hand;
+}
+
+.nav-button:hover {
+    -fx-background-color: #e3ebd9;
+    -fx-text-fill: #171e13;
+}
+
+.nav-button-active {
+    -fx-background-color: #c94a38;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 999px;
+    -fx-padding: 10px 16px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-effect: dropshadow(gaussian, rgba(201, 74, 56, 0.30), 16, 0, 0, 4);
+}
+
+.user-profile-badge {
+    -fx-background-color: #e3ebd9;
+    -fx-background-radius: 16px;
+    -fx-padding: 8px 12px;
+}
+
+.logout-button {
+    -fx-background-color: #ffdad6;
+    -fx-text-fill: #93000a;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 999px;
+    -fx-padding: 9px 16px;
+    -fx-alignment: CENTER;
+    -fx-cursor: hand;
+}
+
+.logout-button:hover {
+    -fx-background-color: #ba1a1a;
+    -fx-text-fill: #ffffff;
+}
+
+/* Top App Header */
+.top-header-bar {
+    -fx-background-color: rgba(244, 252, 234, 0.90);
+    -fx-border-color: transparent transparent #e0e8d5 transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 10px 28px;
+}
+
+.search-field {
+    -fx-background-color: #e9f1de;
+    -fx-background-radius: 999px;
+    -fx-border-color: transparent;
+    -fx-padding: 8px 16px;
+    -fx-font-size: 12.5px;
+    -fx-text-fill: #171e13;
+    -fx-prompt-text-fill: #7a8375;
+}
+
+.icon-circle-button {
+    -fx-background-color: #e9f1de;
+    -fx-background-radius: 999px;
+    -fx-min-width: 36px;
+    -fx-min-height: 36px;
+    -fx-max-width: 36px;
+    -fx-max-height: 36px;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+    -fx-alignment: CENTER;
+}
+
+.icon-circle-button:hover {
+    -fx-background-color: #e3ebd9;
+}
+
+/* Dashboard Cards and Action Buttons */
+.emergency-button {
+    -fx-background-color: #a83223;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-font-size: 12.5px;
+    -fx-background-radius: 999px;
+    -fx-padding: 8px 18px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(168, 50, 35, 0.25), 10, 0, 0, 2);
+}
+
+.emergency-button:hover {
+    -fx-background-color: #8c2518;
+}
+
+.secondary-action-button {
+    -fx-background-color: #e3ebd9;
+    -fx-text-fill: #171e13;
+    -fx-font-weight: bold;
+    -fx-font-size: 12.5px;
+    -fx-background-radius: 999px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+.secondary-action-button:hover {
+    -fx-background-color: #dde5d3;
+}
+
+.dashboard-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(45, 106, 79, 0.08), 18, 0, 0, 4);
+}
+
+.dashboard-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(45, 106, 79, 0.14), 22, 0, 0, 6);
+}
+
+/* Status Badges */
+.pill-green {
+    -fx-background-color: #aeeecb;
+    -fx-text-fill: #225a40;
+    -fx-background-radius: 999px;
+    -fx-padding: 3px 10px;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.pill-red {
+    -fx-background-color: #ffdad6;
+    -fx-text-fill: #93000a;
+    -fx-background-radius: 999px;
+    -fx-padding: 3px 10px;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.pill-blue {
+    -fx-background-color: #d8e2ff;
+    -fx-text-fill: #004494;
+    -fx-background-radius: 999px;
+    -fx-padding: 3px 10px;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.pill-gray {
+    -fx-background-color: #e3ebd9;
+    -fx-text-fill: #58413d;
+    -fx-background-radius: 999px;
+    -fx-padding: 3px 10px;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.feed-row {
+    -fx-background-color: transparent;
+    -fx-background-radius: 12px;
+    -fx-padding: 6px 10px;
+}
+
+.feed-row:hover {
+    -fx-background-color: #eef6e4;
+}
+
+.link-button-coral {
+    -fx-background-color: transparent;
+    -fx-text-fill: #a83223;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+}
+.link-button-coral:hover {
+    -fx-underline: true;
+}
+
+.link-button-green {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2c694e;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+}
+.link-button-green:hover {
+    -fx-underline: true;
+}
+
+.link-button-blue {
+    -fx-background-color: transparent;
+    -fx-text-fill: #0058bd;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+}
+.link-button-blue:hover {
+    -fx-underline: true;
+}
+
+/* Progress Bars */
+.progress-bar {
+    -fx-pref-height: 8px;
+    -fx-min-height: 8px;
+    -fx-max-height: 8px;
+}
+
+.progress-bar .track {
+    -fx-background-color: #e9f1de;
+    -fx-background-radius: 999px;
+}
+
+.progress-bar-coral .bar {
+    -fx-background-color: #a83223;
+    -fx-background-radius: 999px;
+}
+
+.progress-bar-green .bar {
+    -fx-background-color: #2c694e;
+    -fx-background-radius: 999px;
+}
+
+.progress-bar-blue .bar {
+    -fx-background-color: #0058bd;
+    -fx-background-radius: 999px;
+}
+
+/* Filter Pills */
+.filter-pill {
+    -fx-background-color: #e3ebd9;
+    -fx-text-fill: #58413d;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-background-radius: 999px;
+    -fx-padding: 6px 16px;
+    -fx-cursor: hand;
+}
+
+.filter-pill:hover {
+    -fx-background-color: #d8e2cd;
+    -fx-text-fill: #171e13;
+}
+
+.filter-pill-active {
+    -fx-background-color: #c94a38;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 999px;
+    -fx-padding: 6px 16px;
+    -fx-effect: dropshadow(gaussian, rgba(201, 74, 56, 0.30), 12, 0, 0, 3);
+}
+
+/* Pet Card */
+.pet-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20px;
+    -fx-padding: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(45, 106, 79, 0.08), 20, 0, 0, 4);
+}
+
+.pet-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(45, 106, 79, 0.16), 26, 0, 0, 8);
+}
+
+/* Card Specs Container */
+.pet-spec-box {
+    -fx-background-color: #eef6e4;
+    -fx-background-radius: 12px;
+    -fx-padding: 10px 12px;
+}
+
+/* Card Action Buttons */
+.pet-action-button {
+    -fx-background-color: #e9f1de;
+    -fx-text-fill: #171e13;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 999px;
+    -fx-padding: 8px 14px;
+    -fx-cursor: hand;
+}
+
+.pet-action-button:hover {
+    -fx-background-color: #dde5d3;
+}
+
+.pet-heart-button {
+    -fx-background-color: #aeeecb;
+    -fx-text-fill: #225a40;
+    -fx-background-radius: 999px;
+    -fx-min-width: 36px;
+    -fx-min-height: 36px;
+    -fx-max-width: 36px;
+    -fx-max-height: 36px;
+    -fx-padding: 0;
+    -fx-alignment: CENTER;
+    -fx-cursor: hand;
+}
+
+.pet-heart-button:hover {
+    -fx-background-color: #2c694e;
+    -fx-text-fill: #ffffff;
+}
+
+/* Empty State Container */
+.empty-state-box {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20px;
+    -fx-padding: 40px;
+    -fx-alignment: CENTER;
+    -fx-effect: dropshadow(gaussian, rgba(45, 106, 79, 0.06), 16, 0, 0, 4);
+}
+
+/* Medical Bento Metric Cards */
+.bento-metric-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 18px;
+    -fx-padding: 16px 18px;
+    -fx-effect: dropshadow(gaussian, rgba(45, 106, 79, 0.07), 16, 0, 0, 3);
+}
+
+.bento-metric-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(45, 106, 79, 0.13), 20, 0, 0, 5);
+}
+
+/* Master Table Styling */
+.medical-table-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(45, 106, 79, 0.08), 20, 0, 0, 4);
+}
+
+.medical-table {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.medical-table .column-header-background {
+    -fx-background-color: #eef6e4;
+    -fx-background-radius: 14px 14px 0 0;
+    -fx-border-color: transparent transparent #e0e8d5 transparent;
+}
+
+.medical-table .column-header {
+    -fx-background-color: transparent;
+    -fx-size: 40px;
+    -fx-border-color: transparent;
+}
+
+.medical-table .column-header .label {
+    -fx-text-fill: #58413d;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+}
+
+.medical-table .table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent transparent #f0f4ea transparent;
+    -fx-padding: 4px 0;
+}
+
+.medical-table .table-row-cell:hover {
+    -fx-background-color: #f7faf3;
+}
+
+.medical-table .table-row-cell:selected {
+    -fx-background-color: #e9f1de;
+}
+
+.medical-table .table-cell {
+    -fx-border-color: transparent;
+    -fx-alignment: CENTER_LEFT;
+    -fx-font-size: 12.5px;
+}
+
+/* Table Toolbar Button */
+.table-tool-button {
+    -fx-background-color: #eef6e4;
+    -fx-text-fill: #58413d;
+    -fx-font-size: 11.5px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 999px;
+    -fx-padding: 5px 14px;
+    -fx-cursor: hand;
+}
+
+.table-tool-button:hover {
+    -fx-background-color: #e3ebd9;
+    -fx-text-fill: #171e13;
+}
+
+/* Operational Notice Box */
+.notice-box {
+    -fx-background-color: #eef6e4;
+    -fx-background-radius: 18px;
+    -fx-padding: 20px;
+}
+
+/* Amber Emergency Action Button */
+.amber-cta-button {
+    -fx-background-color: #ffb020;
+    -fx-text-fill: #1a201c;
+    -fx-font-weight: 800;
+    -fx-font-size: 13px;
+    -fx-background-radius: 999px;
+    -fx-padding: 9px 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(255, 176, 32, 0.40), 16, 0, 0, 4);
+}
+
+.amber-cta-button:hover {
+    -fx-background-color: #e69d19;
+}
+
+/* Incident Stream Card */
+.incident-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20px;
+    -fx-padding: 18px 22px;
+    -fx-effect: dropshadow(gaussian, rgba(45, 106, 79, 0.07), 18, 0, 0, 4);
+}
+
+.incident-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(224, 90, 71, 0.14), 22, 0, 0, 6);
+}
+
+/* GPS Map Preview Box */
+.map-preview-box {
+    -fx-background-color: #e9f1de;
+    -fx-background-radius: 12px;
+    -fx-min-width: 105px;
+    -fx-pref-width: 105px;
+    -fx-min-height: 60px;
+    -fx-pref-height: 60px;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER;
+}
+
+.map-preview-box:hover {
+    -fx-background-color: #dbe5cf;
+}
+
+/* Urgency Status Badges */
+.urgency-critical {
+    -fx-background-color: #fee2e2;
+    -fx-text-fill: #991b1b;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+    -fx-background-radius: 999px;
+    -fx-padding: 3px 10px;
+}
+
+.urgency-high {
+    -fx-background-color: #ffedd5;
+    -fx-text-fill: #9a3412;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+    -fx-background-radius: 999px;
+    -fx-padding: 3px 10px;
+}
+
+.urgency-medium {
+    -fx-background-color: #fef3c7;
+    -fx-text-fill: #92400e;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+    -fx-background-radius: 999px;
+    -fx-padding: 3px 10px;
+}
+
+/* Unit Selection Card in Modal */
+.unit-option-card {
+    -fx-background-color: #eef6e4;
+    -fx-background-radius: 12px;
+    -fx-padding: 10px 14px;
+}
+
+.unit-option-card:hover {
+    -fx-background-color: #e3ebd9;
+}
+
+/* Adoption Application Card */
+.app-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20px;
+    -fx-padding: 18px 22px;
+    -fx-effect: dropshadow(gaussian, rgba(45, 106, 79, 0.08), 20, 0, 0, 4);
+}
+
+.app-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(45, 106, 79, 0.15), 26, 0, 0, 6);
+}
+
+/* Filter Chips */
+.filter-chip {
+    -fx-background-color: #e9f1de;
+    -fx-text-fill: #58413d;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-background-radius: 999px;
+    -fx-padding: 6px 16px;
+    -fx-cursor: hand;
+}
+
+.filter-chip:hover {
+    -fx-background-color: #dde5d3;
+    -fx-text-fill: #171e13;
+}
+
+.filter-chip-active {
+    -fx-background-color: #171e13;
+    -fx-text-fill: #f4fcea;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 999px;
+    -fx-padding: 6px 16px;
+}
+
+/* Compliance Stage Box */
+.stage-box {
+    -fx-background-color: #eef6e4;
+    -fx-background-radius: 14px;
+    -fx-padding: 12px 14px;
+}
+
+/* Fee Clearing Engine Gradient Container */
+.fee-clearing-box {
+    -fx-background-color: linear-gradient(to bottom right, #eef6e4, #e3ebd9);
+    -fx-background-radius: 20px;
+    -fx-padding: 22px;
+    -fx-effect: dropshadow(gaussian, rgba(45, 106, 79, 0.08), 20, 0, 0, 4);
+}
+
+/* Transaction Row Card */
+.txn-row-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20px;
+    -fx-padding: 16px 22px;
+    -fx-effect: dropshadow(gaussian, rgba(45, 106, 79, 0.06), 18, 0, 0, 3);
+}
+
+.txn-row-card:hover {
+    -fx-background-color: #f7faf3;
+    -fx-effect: dropshadow(gaussian, rgba(45, 106, 79, 0.12), 22, 0, 0, 5);
+}
+
+/* Method Icon Container */
+.txn-icon-box {
+    -fx-background-radius: 16px;
+    -fx-min-width: 48px;
+    -fx-pref-width: 48px;
+    -fx-min-height: 48px;
+    -fx-pref-height: 48px;
+    -fx-alignment: CENTER;
+}
+
+/* Process Payment Modal Window */
+.payment-modal-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 24px;
+    -fx-padding: 24px 28px;
+    -fx-effect: dropshadow(gaussian, rgba(45, 106, 79, 0.18), 30, 0, 0, 8);
+}

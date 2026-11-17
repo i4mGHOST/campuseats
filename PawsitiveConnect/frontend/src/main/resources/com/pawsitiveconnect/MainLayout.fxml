@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="760.0" prefWidth="1200.0" stylesheets="@global-theme.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pawsitiveconnect.MainLayoutController">
+
+    <!-- ================= LEFT SIDEBAR ================= -->
+    <left>
+        <VBox prefWidth="250.0" spacing="8.0" styleClass="sidebar">
+            <padding>
+                <Insets bottom="20.0" left="14.0" right="14.0" top="18.0" />
+            </padding>
+
+            <!-- Brand Logo Pill -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="brand-badge">
+                <Label style="-fx-font-size: 20px;" text="🐾" />
+                <VBox minWidth="0.0">
+                    <Label style="-fx-text-fill: #a83223; -fx-font-weight: 800; -fx-font-size: 13.5px;" text="Pawsitive Connect" />
+                    <Label fx:id="userEmailLabel" styleClass="text-card-muted" text="firstuser@pawsitive.com" />
+                </VBox>
+            </HBox>
+
+            <Region prefHeight="6.0" />
+
+            <!-- Navigation Links (Universal Clean Glyphs) -->
+            <VBox spacing="4.0">
+                <Button fx:id="navDashboard" maxWidth="Infinity" onAction="#showDashboard" styleClass="nav-button-active" text="📊  Dashboard" />
+                <Button fx:id="navPets" maxWidth="Infinity" onAction="#showPets" styleClass="nav-button" text="🐶  Pet Catalogue" />
+                <Button fx:id="navMedical" maxWidth="Infinity" onAction="#showMedical" styleClass="nav-button" text="✚  Welfare &amp; Medical" />
+                <Button fx:id="navRescue" maxWidth="Infinity" onAction="#showRescue" styleClass="nav-button" text="🚐  Rescue Dispatch" />
+                <Button fx:id="navAdoptions" maxWidth="Infinity" onAction="#showAdoptions" styleClass="nav-button" text="🤝  Adoptions" />
+                <Button fx:id="navLedger" maxWidth="Infinity" onAction="#showTransactionLedger" styleClass="nav-button" text="💳  Transaction Ledger" />
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS" />
+
+            <!-- Dynamic User Profile Badge -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="user-profile-badge">
+                <Label style="-fx-font-size: 18px;" text="👤" />
+                <VBox>
+                    <Label fx:id="userRoleLabel" style="-fx-text-fill: #171e13; -fx-font-weight: bold; -fx-font-size: 12px;" text="Shelter Lead" />
+                    <Label style="-fx-text-fill: #2c694e; -fx-font-weight: bold; -fx-font-size: 10px;" text="Coordinator Active" />
+                </VBox>
+            </HBox>
+
+            <!-- Logout Button -->
+            <Button maxWidth="Infinity" onAction="#handleLogout" styleClass="logout-button" text="🚪  Log Out" />
+        </VBox>
+    </left>
+
+    <!-- ================= WORKSPACE ================= -->
+    <center>
+        <BorderPane>
+            <!-- Top App Bar -->
+            <top>
+                <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="top-header-bar">
+                    <TextField fx:id="searchField" prefHeight="36.0" prefWidth="380.0" promptText="🔍  Search rescue cases, tag IDs, intakes..." styleClass="search-field" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <HBox alignment="CENTER" spacing="8.0">
+                        <Button styleClass="icon-circle-button" text="🔔" />
+                        <Button styleClass="icon-circle-button" text="❓" />
+                        <Separator orientation="VERTICAL" prefHeight="22.0" />
+                        <Label style="-fx-font-size: 14px; -fx-padding: 0 4px;" text="🔒" />
+                    </HBox>
+                </HBox>
+            </top>
+
+            <!-- Content Area Viewport -->
+            <center>
+                <StackPane fx:id="contentArea" styleClass="content-area" />
+            </center>
+        </BorderPane>
+    </center>
+</BorderPane>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+
+<StackPane prefHeight="700.0" prefWidth="1080.0" styleClass="paw-bg" stylesheets="@global-theme.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pawsitiveconnect.RegisterController">
+    <padding>
+        <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
+    </padding>
+
+    <!-- Main Floating Split Card -->
+    <HBox maxHeight="660.0" maxWidth="1030.0" styleClass="main-card">
+
+        <!-- ================= LEFT HERO COLUMN ================= -->
+        <VBox prefWidth="440.0" spacing="18.0" styleClass="hero-pane">
+            <padding>
+                <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
+            </padding>
+
+            <!-- Verified Badge with SVG Shield -->
+            <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" spacing="8.0" styleClass="glass-badge">
+                <SVGPath content="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" fill="#D7F6E4" scaleX="0.75" scaleY="0.75" />
+                <Label style="-fx-font-weight: bold; -fx-font-size: 11px;" text="Verified Non-Profit Community" />
+            </HBox>
+
+            <!-- Title -->
+            <Label text="Find unconditional love.&#10;Save a precious life." wrapText="true">
+                <font><Font name="System Bold" size="26.0" /></font>
+            </Label>
+
+            <Label styleClass="hero-muted" text="Whether you want to adopt, foster, or volunteer, our dedicated network matches you with pets waiting for a home." wrapText="true">
+                <font><Font size="12.0" /></font>
+            </Label>
+
+            <!-- Perks Showcase -->
+            <VBox spacing="10.0">
+                <!-- Perk 1: Matchmaking (SVG Heart) -->
+                <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="perk-box">
+                    <StackPane maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" style="-fx-background-color: rgba(224,90,71,0.3); -fx-background-radius: 10px;">
+                        <SVGPath content="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#FFFFFF" scaleX="0.7" scaleY="0.7" />
+                    </StackPane>
+                    <VBox>
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 12px;" text="Smart Matchmaking" />
+                        <Label styleClass="hero-muted" text="Pet recommendations suited to your home."><font><Font size="10.5" /></font></Label>
+                    </VBox>
+                </HBox>
+
+                <!-- Perk 2: Health (SVG Medical Cross) -->
+                <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="perk-box">
+                    <StackPane maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" style="-fx-background-color: rgba(82,183,136,0.3); -fx-background-radius: 10px;">
+                        <SVGPath content="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z" fill="#FFFFFF" scaleX="0.75" scaleY="0.75" />
+                    </StackPane>
+                    <VBox>
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 12px;" text="Vet-Checked Health History" />
+                        <Label styleClass="hero-muted" text="100% transparent vaccinations &amp; records."><font><Font size="10.5" /></font></Label>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS" />
+
+            <!-- Community Proof -->
+            <HBox alignment="CENTER_LEFT" spacing="8.0">
+                <Label text="🐾" />
+                <Label styleClass="hero-muted" text="50k+ Happy Adopters • Free Forever">
+                    <font><Font size="11.5" /></font>
+                </Label>
+            </HBox>
+        </VBox>
+
+        <!-- ================= RIGHT REGISTRATION FORM ================= -->
+        <VBox alignment="CENTER_LEFT" prefWidth="590.0" spacing="11.0">
+            <padding>
+                <Insets bottom="28.0" left="42.0" right="42.0" top="28.0" />
+            </padding>
+
+            <VBox spacing="2.0">
+                <Label text="Create Account">
+                    <font><Font name="System Bold" size="24.0" /></font>
+                </Label>
+                <Label style="-fx-text-fill: #6e7968;" text="Join the Pawsitive Connect community">
+                    <font><Font size="12.5" /></font>
+                </Label>
+            </VBox>
+
+            <!-- Full Name -->
+            <VBox spacing="3.0">
+                <Label style="-fx-font-weight: bold; -fx-font-size: 10.5px; -fx-text-fill: #4A5243;" text="FULL NAME *" />
+                <TextField fx:id="fullNameField" prefHeight="38.0" promptText="Jane Doe" styleClass="form-input" />
+            </VBox>
+
+            <!-- Email & Phone -->
+            <HBox spacing="12.0">
+                <VBox spacing="3.0" HBox.hgrow="ALWAYS">
+                    <Label style="-fx-font-weight: bold; -fx-font-size: 10.5px; -fx-text-fill: #4A5243;" text="EMAIL ADDRESS *" />
+                    <TextField fx:id="emailField" prefHeight="38.0" promptText="jane@example.com" styleClass="form-input" />
+                </VBox>
+                <VBox spacing="3.0" HBox.hgrow="ALWAYS">
+                    <Label style="-fx-font-weight: bold; -fx-font-size: 10.5px; -fx-text-fill: #4A5243;" text="PHONE NUMBER *" />
+                    <TextField fx:id="phoneField" prefHeight="38.0" promptText="+1 (555) 000-0000" styleClass="form-input" />
+                </VBox>
+            </HBox>
+
+            <!-- Password -->
+            <VBox spacing="3.0">
+                <Label style="-fx-font-weight: bold; -fx-font-size: 10.5px; -fx-text-fill: #4A5243;" text="PASSWORD *" />
+                <StackPane alignment="CENTER_RIGHT">
+                    <PasswordField fx:id="passwordField" prefHeight="38.0" promptText="Create a secure password" styleClass="form-input" />
+                    <TextField fx:id="passwordTextField" managed="false" prefHeight="38.0" promptText="Create a secure password" styleClass="form-input" visible="false" />
+                    <Button fx:id="togglePasswordBtn" onAction="#handleTogglePassword" styleClass="eye-toggle-btn" text="👁 Show" />
+                </StackPane>
+            </VBox>
+
+            <!-- Account Role -->
+            <VBox spacing="3.0">
+                <Label style="-fx-font-weight: bold; -fx-font-size: 10.5px; -fx-text-fill: #4A5243;" text="ACCOUNT ROLE *" />
+                <ComboBox fx:id="roleComboBox" maxWidth="Infinity" prefHeight="38.0" />
+            </VBox>
+
+            <!-- Pledge Checkbox -->
+            <CheckBox fx:id="termsCheckbox" selected="true" style="-fx-text-fill: #4A5243;" text="I agree to the Terms of Service and Animal Welfare Pledge." wrapText="true">
+                <font><Font size="11.5" /></font>
+            </CheckBox>
+
+            <!-- Status Label -->
+            <Label fx:id="statusLabel" wrapText="true">
+                <font><Font size="12.0" /></font>
+            </Label>
+
+            <!-- Submit Button -->
+            <Button maxWidth="Infinity" onAction="#handleRegister" prefHeight="42.0" styleClass="primary-button" text="Register  →" />
+
+            <!-- Switch to Login -->
+            <HBox alignment="CENTER" spacing="5.0">
+                <Label style="-fx-text-fill: #5F6758;" text="Already have an account?"><font><Font size="12.5" /></font></Label>
+                <Button onAction="#handleGoToLogin" styleClass="link-button" text="Log In"><font><Font size="12.5" /></font></Button>
+            </HBox>
+        </VBox>
+    </HBox>
+</StackPane>

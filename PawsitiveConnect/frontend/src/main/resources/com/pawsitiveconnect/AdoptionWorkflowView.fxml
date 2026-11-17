@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;" stylesheets="@global-theme.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pawsitiveconnect.AdoptionWorkflowController">
+
+    <VBox spacing="20.0" styleClass="content-area">
+        <padding>
+            <Insets bottom="32.0" left="28.0" right="28.0" top="20.0" />
+        </padding>
+
+        <!-- ================= TOP HEADER HORIZON ================= -->
+        <HBox alignment="CENTER_LEFT" spacing="16.0">
+            <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                    <Label styleClass="pill-green" text="● SHELTER PLACEMENT &amp; REHOMING" />
+                    <Label styleClass="text-card-muted" text="• Active Queue" />
+                </HBox>
+                <Label styleClass="text-main-title" text="Adoptions Workflow" />
+                <Label styleClass="text-subtitle" text="Manage prospective adopter evaluations, application approvals, home check milestones, and fee settlement." />
+            </VBox>
+
+            <!-- Search, Export & New Intake -->
+            <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                <TextField fx:id="searchField" prefHeight="40.0" prefWidth="250.0" promptText="🔍  Search applicants or pets..." styleClass="search-field" />
+                <Button fx:id="exportLedgerBtn" onAction="#handleExportLedger" styleClass="secondary-action-button" text="📥 Export Ledger" />
+                <Button onAction="#handleOpenNewIntakeModal" styleClass="emergency-button" text="+ New Adoption Intake" />
+            </HBox>
+        </HBox>
+
+        <!-- ================= 4 KPI SUMMARY BENTO CARDS ================= -->
+        <HBox spacing="14.0">
+            <!-- 1. Total In Review -->
+            <VBox spacing="6.0" styleClass="bento-metric-card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="text-card-muted" text="TOTAL IN REVIEW" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label style="-fx-font-size: 16px;" text="⏳" />
+                </HBox>
+                <HBox alignment="BASELINE_LEFT" spacing="6.0">
+                    <Label fx:id="totalInReviewLabel" styleClass="text-main-title" text="0" />
+                    <Label styleClass="text-card-muted" text="Applications" />
+                </HBox>
+                <Label fx:id="pendingReviewSubLabel" styleClass="pill-gray" text="0 Pending Admin Review" />
+            </VBox>
+
+            <!-- 2. Approved Awaiting Fee -->
+            <VBox spacing="6.0" styleClass="bento-metric-card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="text-card-muted" text="APPROVED AWAITING FEE" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label style="-fx-font-size: 16px;" text="💳" />
+                </HBox>
+                <HBox alignment="BASELINE_LEFT" spacing="6.0">
+                    <Label fx:id="approvedCountLabel" styleClass="metric-num-green" text="0" />
+                    <Label styleClass="text-card-muted" text="Applications" />
+                </HBox>
+                <Label styleClass="pill-green" text="✓ Ready for settlement" />
+            </VBox>
+
+            <!-- 3. Finalized Placements -->
+            <VBox spacing="6.0" styleClass="bento-metric-card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="text-card-muted" text="FINALIZED THIS MONTH" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label style="-fx-font-size: 16px;" text="🎉" />
+                </HBox>
+                <HBox alignment="BASELINE_LEFT" spacing="6.0">
+                    <Label fx:id="completedCountLabel" styleClass="metric-num-blue" text="18" />
+                    <Label styleClass="text-card-muted" text="Placements" />
+                </HBox>
+                <Label style="-fx-text-fill: #2c694e; -fx-font-weight: bold; -fx-font-size: 11px;" text="📈 +12% vs last month" />
+            </VBox>
+
+            <!-- 4. Avg Processing Speed -->
+            <VBox spacing="6.0" styleClass="bento-metric-card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="text-card-muted" text="AVG PROCESSING SPEED" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label style="-fx-font-size: 16px;" text="⚡" />
+                </HBox>
+                <HBox alignment="BASELINE_LEFT" spacing="6.0">
+                    <Label styleClass="text-main-title" text="3.2" />
+                    <Label styleClass="text-card-muted" text="Days" />
+                </HBox>
+                <Label style="-fx-text-fill: #2c694e; -fx-font-size: 11px;" text="Target: &lt; 4.0 days" />
+            </VBox>
+        </HBox>
+
+        <!-- ================= FILTER CHIPS ROW ================= -->
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <Button fx:id="filterAllBtn" onAction="#handleFilterAll" styleClass="filter-chip-active" text="All" />
+            <Button fx:id="filterApprovedBtn" onAction="#handleFilterApproved" styleClass="filter-chip" text="Approved" />
+            <Button fx:id="filterPendingBtn" onAction="#handleFilterPending" styleClass="filter-chip" text="Pending Review" />
+            <Button fx:id="filterCompletedBtn" onAction="#handleFilterCompleted" styleClass="filter-chip" text="Fee Settled / Completed" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label styleClass="text-card-muted" text="↕ Sorted by Priority &amp; Status" />
+        </HBox>
+
+        <!-- ================= ACTIVE APPLICATION CARDS LIST ================= -->
+        <VBox fx:id="adoptionListContainer" spacing="12.0" />
+
+        <!-- Empty Search State -->
+        <VBox fx:id="noResultsBox" managed="false" spacing="8.0" styleClass="empty-state-box" visible="false">
+            <Label style="-fx-font-size: 32px;" text="🔍" />
+            <Label styleClass="text-card-header" text="No matching adoption applications found" />
+            <Label styleClass="text-card-muted" text="Try clearing your search keyword or switching filter categories." />
+        </VBox>
+
+        <!-- ================= BOTTOM MILESTONE & COMPLIANCE BENTO SECTION ================= -->
+        <HBox spacing="16.0">
+            <!-- 1. Protocol Guidelines (Left 2 Cols) -->
+            <VBox spacing="14.0" styleClass="dashboard-card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
+                    <HBox alignment="CENTER_LEFT" spacing="8.0">
+                        <Label style="-fx-font-size: 18px;" text="📋" />
+                        <VBox>
+                            <Label styleClass="text-card-header" text="Adoption Protocol Guidelines &amp; Home Safety Check" />
+                            <Label styleClass="text-card-muted" text="Standard Operating Procedure rev 4.2 • Verified Active" />
+                        </VBox>
+                    </HBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label styleClass="pill-green" text="State Welfare Compliant" />
+                </HBox>
+
+                <!-- 3 Stage Mini Cards -->
+                <HBox spacing="12.0">
+                    <VBox spacing="4.0" styleClass="stage-box" HBox.hgrow="ALWAYS">
+                        <Label style="-fx-text-fill: #2c694e; -fx-font-weight: bold; -fx-font-size: 12px;" text="✓ Stage 1: Vetting" />
+                        <Label styleClass="text-card-muted" text="Identity validation, residential pet permission, &amp; past vet logs." wrapText="true" />
+                    </VBox>
+                    <VBox spacing="4.0" styleClass="stage-box" HBox.hgrow="ALWAYS">
+                        <Label style="-fx-text-fill: #2c694e; -fx-font-weight: bold; -fx-font-size: 12px;" text="✓ Stage 2: Home Visit" />
+                        <Label styleClass="text-card-muted" text="Physical or virtual environment scan for fencing, hazards, &amp; setup." wrapText="true" />
+                    </VBox>
+                    <VBox spacing="4.0" styleClass="stage-box" HBox.hgrow="ALWAYS">
+                        <Label style="-fx-text-fill: #a83223; -fx-font-weight: bold; -fx-font-size: 12px;" text="💳 Stage 3: Settlement" />
+                        <Label styleClass="text-card-muted" text="Ledger receipt generated, vaccination tags transferred &amp; finalized." wrapText="true" />
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- 2. Fee Clearing Engine (Right 1 Col) -->
+            <VBox prefWidth="360.0" spacing="12.0" styleClass="fee-clearing-box">
+                <HBox alignment="CENTER_LEFT" spacing="6.0">
+                    <Label style="-fx-font-size: 16px;" text="💰" />
+                    <Label style="-fx-text-fill: #a83223; -fx-font-weight: bold; -fx-font-size: 11.5px;" text="FEE CLEARING ENGINE" />
+                </HBox>
+                <Label styleClass="text-main-title" style="-fx-font-size: 18px;" text="Pending Fee Collections" />
+                <Label fx:id="pendingFeeSummaryLabel" styleClass="text-subtitle" text="Calculating fee ledger totals..." wrapText="true" />
+
+                <!-- Mini Fee Summary List -->
+                <VBox fx:id="feeSummaryContainer" spacing="6.0" />
+
+                <Region VBox.vgrow="ALWAYS" />
+                <Button maxWidth="Infinity" onAction="#handleBatchProcess" styleClass="primary-button" text="Batch Process Fees" />
+            </VBox>
+        </HBox>
+    </VBox>
+</ScrollPane>
